@@ -36,10 +36,10 @@ export class Board {
     }
 
     /**
-     * Geef de huidige positie van de speler
+     * Geef de huidige positie van de speler. Als de speler niet op het bord staat, dan geef undefined
      * @param player De speler die je moet vinden.
      */
-    playerPosition(player: Player): number {
+    playerPosition(player: Player): number | undefined {
         // TODO: Ymre
         return undefined;
     }
