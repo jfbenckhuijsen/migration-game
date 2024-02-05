@@ -1,4 +1,5 @@
 import {Finish, NormalSquare, Square} from './square';
+import {Player} from './player';
 
 export class Board {
     squares: Array<Square>
@@ -27,9 +28,19 @@ export class Board {
      *
      * Als de speler meer gooit dan het aantal vakjes dat er is, dan moet je terugtellen.
      *
-     * @param steps
+     * @param player The player to move
+     * @param steps The number of steps to move
      */
-    movePlayer(steps: number) {
+    movePlayer(player: Player, steps: number) {
         // TODO: Ymre
+    }
+
+    /**
+     * Geef de huidige positie van de speler
+     * @param player De speler die je moet vinden.
+     */
+    playerPosition(player: Player): number {
+        // TODO: Ymre
+        return undefined;
     }
 }
