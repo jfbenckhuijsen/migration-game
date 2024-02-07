@@ -12,6 +12,7 @@ export abstract class Square {
 
     playerLands(player: Player, board: Board) {
         this.player = player
+        this.doPlayerLands(player, board)
     }
 
     /**
