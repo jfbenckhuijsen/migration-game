@@ -42,7 +42,11 @@ export class Board {
      * @param player De speler die je moet vinden.
      */
     playerPosition(player: Player): number | undefined {
-        // TODO: Ymre
+        for (let i = 0; i < this.squares.length; i++) {
+            if (this.squares[i].player == player) {
+                return this.squares[i].place
+            }
+        }
         return undefined;
     }
 }
