@@ -2,3 +2,10 @@
     padding: 0px;
     margin: 0px;
 }
+
+.gamemap {
+    border: 1px;
+    max-height: 80%;
+    max-width: 80%;
+    width: auto;
+}

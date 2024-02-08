@@ -6,7 +6,7 @@ module.exports = {
     entry: './src/index.ts',
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'Output Management',
+            title: 'Migration game',
         }),
     ],
     output: {
