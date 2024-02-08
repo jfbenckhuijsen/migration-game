@@ -1,4 +1,5 @@
 import {Player} from './player';
+import {Turn} from "./turn";
 
 export interface GameUI {
 
@@ -19,9 +20,11 @@ export class Game {
 
     /**
      * Laat de huidige speler een beurt nemen.
+     * @return De informatie over de Turn
      */
-    takeTurn() {
+    takeTurn(): Turn {
         // TODO: Ymre
+        return undefined
     }
 
     /**

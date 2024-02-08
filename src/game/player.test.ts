@@ -7,21 +7,21 @@ describe('Players', () => {
         let board = new Board()
         let player = new Player()
 
-        player.takeTurn(board)
+        let turn = player.takeTurn(board)
 
-        expect(board.playerPosition(player)).toBeGreaterThan(0)
+        expect(turn.diceValue).toBeGreaterThan(0)
+        expect(board.playerPosition(player)).toBe(turn.diceValue)
     })
 
     test('take second turn', () => {
         let board = new Board()
         let player = new Player()
 
-        player.takeTurn(board)
+        let turn = player.takeTurn(board)
 
-        expect(board.playerPosition(player)).toBeGreaterThan(0)
-        let position = board.playerPosition(player)
+        expect(board.playerPosition(player)).toBe(turn.diceValue)
 
-        player.takeTurn(board)
-        expect(board.playerPosition(player)).toBeGreaterThan(position)
+        let turn2 = player.takeTurn(board)
+        expect(board.playerPosition(player)).toBeGreaterThan(turn.diceValue + turn2.diceValue)
     })
 })

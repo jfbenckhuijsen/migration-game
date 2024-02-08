@@ -30,9 +30,11 @@ export class Board {
      *
      * @param player The player to move
      * @param steps The number of steps to move
+     * @return De nieuwe positie van de speler
      */
-    movePlayer(player: Player, steps: number) {
+    movePlayer(player: Player, steps: number): number {
         // TODO: Ymre
+        return 1;
     }
 
     /**
