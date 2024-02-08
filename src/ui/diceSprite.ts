@@ -5,6 +5,10 @@ import {Sprite} from "./sprite";
 export class DiceSprite {
 
     sprite: Sprite
+    totalFrames: number
+    speed= 0.2
+    frame= 0
+    y : number
 
     static spritesheet: Image = undefined
 
@@ -16,18 +20,28 @@ export class DiceSprite {
         let animation = new Array<Image>()
 
         for (let i = 0; i < 11; i++) {
-            let showvalue = Math.floor(Math.random() * 6)
-            let x = showvalue * 16
-            let img = DiceSprite.spritesheet.get(x, 0, 16, 16)
+            let img = this.getSpriteFrame(i % 6, 14)
             animation.push(img)
         }
 
-        animation.push(DiceSprite.spritesheet.get((value - 1) * 16, 0,  16, 16))
+        animation.push(this.getSpriteFrame(value - 1, 0))
 
-        this.sprite = new Sprite(animation, x, y, 0.2, true)
+        this.sprite = new Sprite(animation, x, y, this.speed, true)
+        this.totalFrames = Math.ceil(animation.length / this.speed)
+        this.y = y
+    }
+
+    private getSpriteFrame(col : number, row: number): Image {
+        var img = DiceSprite.spritesheet
+            .get(col * 16, row * 16, 16, 16)
+        img.resize(32, 32)
+        return img
     }
 
     roll(p5: p5): boolean {
+        this.sprite.y = this.y - 20 * Math.sin(Math.PI * this.frame / this.totalFrames)
+        this.frame++
+
         this.sprite.show(p5)
         this.sprite.animate()
         return this.sprite.ended()
@@ -35,5 +49,6 @@ export class DiceSprite {
 
     reset() {
         this.sprite.reset()
+        this.frame = 0
     }
 }

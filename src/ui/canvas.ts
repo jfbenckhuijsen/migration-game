@@ -43,10 +43,10 @@ export class Canvas implements GameUI {
                 sketch.rectMode(sketch.CENTER).noFill().frameRate(30);
 
                 for (let i = 0; i < 6; i++) {
-                    this.dies.push(new DiceSprite(i + 1, 10, 10))
+                    this.dies.push(new DiceSprite(i + 1, 10, 40))
                 }
                 this.rollButton = sketch.createButton("roll")
-                    .position(10, 40)
+                    .position(10, 70)
                     .mouseClicked(() => {
                         this.turn = this.game.takeTurn()
 
@@ -71,6 +71,7 @@ export class Canvas implements GameUI {
 
             sketch.draw = () => {
                 if (this.dieRolling) {
+                    sketch.clear()
                     this.dieRolling = !this.dies[this.turn.diceValue - 1].roll(sketch)
                     if (!this.dieRolling) {
                         this.movePlayer = true;
