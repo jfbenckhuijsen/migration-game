@@ -1,5 +1,6 @@
 import {Player} from './player';
 import {Turn} from "./turn";
+import {Board} from "./board";
 
 export interface GameUI {
 
@@ -9,12 +10,23 @@ export interface GameUI {
 
 export class Game {
     private gameUI: GameUI;
+    board: Board
+    players: Array<Player>
+    current: Player
 
     constructor(gameUI: GameUI, numberOfPlayers: number) {
         this.gameUI = gameUI;
 
-        // TODO: Maak een spel aan met het opgegeven aantal spelers
-        // TODO: Maak een nieuw bord aan
+        this.board = new Board()
+        this.players = new Array<Player>()
+        for (let i = 0; i < numberOfPlayers; i++) {
+            var player = new Player()
+            this.players.push(player)
+        }
+
+        this.current = this.players[0]
+
+
         // TODO: laat een random speler de eerste speler zijn
     }
 
@@ -23,8 +35,7 @@ export class Game {
      * @return De informatie over de Turn
      */
     takeTurn(): Turn {
-        // TODO: Ymre
-        return undefined
+        return this.current.takeTurn(this.board)
     }
 
     /**
