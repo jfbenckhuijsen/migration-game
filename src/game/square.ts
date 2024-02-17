@@ -10,9 +10,37 @@ export abstract class Square {
         this.player = undefined
     }
 
-    playerLands(player: Player, board: Board) {
+    /**
+     * @return true als er een speler op dit vakje staat, anders false
+     */
+    isOccupied() : boolean {
+        return this.player != undefined;
+    }
+
+    /**
+     * Controleer of de speler op dit vakje staat
+     * @param thePlayer De speler
+     * @return true indien de speler op het vakje staat, anders false
+     */
+    isOccupiedBy(thePlayer: Player): boolean {
+        return this.player == thePlayer
+    }
+
+    /**
+     * Laad de speler een vakje bezetten.
+     * @param player De speler
+     * @param board Het board waar het vakje bij hoort
+     */
+    occupy(player: Player, board: Board) {
         this.player = player
-        this.doPlayerLands(player, board)
+        this.playerLands(player, board)
+    }
+
+    /**
+     * Haal de speler die op het vakje staat weg van dit vakje.
+     */
+    leave() {
+        this.player = undefined
     }
 
     /**
@@ -20,7 +48,7 @@ export abstract class Square {
      * @param player The huidige speler die op het vakje land
      * @param board Het board waar het vakje toe behoort.
      */
-    abstract doPlayerLands(player: Player, board: Board): void
+    abstract playerLands(player: Player, board: Board): void
 }
 
 export class NormalSquare extends Square {
@@ -29,7 +57,7 @@ export class NormalSquare extends Square {
         super(place);
     }
 
-    doPlayerLands(player: Player, board: Board): void {
+    playerLands(player: Player, board: Board): void {
     }
 }
 
@@ -45,7 +73,7 @@ export class Finish extends Square {
      * @param player De huidige speler
      * @param board Het speelbord
      */
-    doPlayerLands(player: Player, board: Board) {
+    playerLands(player: Player, board: Board) {
         /// TODO: Ymre
     }
 }

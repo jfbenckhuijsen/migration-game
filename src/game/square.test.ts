@@ -5,6 +5,11 @@ import {Board} from './board';
 
 describe('Squares', () => {
 
+    test('square is occuped', () => {
+        let square = new NormalSquare(1)
+
+    })
+
     test('normal square just lands the plauer', () => {
         let square = new NormalSquare(1)
 
@@ -13,7 +18,7 @@ describe('Squares', () => {
 
         let player = new Player()
         let board = new Board()
-        square.playerLands(player, board)
+        square.occupy(player, board)
 
         expect(square.place).toBe(1)
         expect(square.player).toBe(player)
@@ -27,7 +32,7 @@ describe('Squares', () => {
 
         let player = new Player()
         let board = new Board()
-        square.playerLands(player, board)
+        square.occupy(player, board)
 
         expect(square.place).toBe(1)
         expect(square.player).toBe(player)
