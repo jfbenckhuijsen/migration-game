@@ -7,7 +7,8 @@ export class Board {
     constructor() {
         this.squares = new Array<Square>()
         for (let i = 0; i < 62; i++) {
-            this.squares.push(new NormalSquare(i))
+            var square = new NormalSquare(i)
+            this.squares.push(square)
         }
         this.squares.push(new Finish(63))
     }
@@ -33,8 +34,33 @@ export class Board {
      * @return De nieuwe positie van de speler
      */
     movePlayer(player: Player, steps: number): number {
-        // TODO: Ymre
-        return 1;
+        var pos: number = this.playerPosition(player)
+        if(pos == undefined) {
+            pos = 0
+        }
+        var newPos = pos + steps
+
+        // PLayer moved beyond the finish line
+        var direction = 1
+
+        if (newPos >= this.squares.length) {
+            var stepsBack = newPos - this.squares.length
+            newPos = this.squares.length - stepsBack
+            direction = -1
+        }
+
+        // Player lands on another player
+        while (this.squares[newPos].isOccupied()) {
+            newPos = newPos + direction
+        }
+
+        // Move the plauer
+        var oldSquare = this.squares [pos]
+        oldSquare.leave()
+        var square = this.squares[newPos]
+        square.occupy(player, this)
+
+        return newPos;
     }
 
     /**
@@ -43,8 +69,9 @@ export class Board {
      */
     playerPosition(player: Player): number | undefined {
         for (let i = 0; i < this.squares.length; i++) {
-            if (this.squares[i].player == player) {
-                return this.squares[i].place
+            var square = this.squares[i]
+            if (square.isOccupiedBy(player)) {
+                return square.place
             }
         }
         return undefined;
