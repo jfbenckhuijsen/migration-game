@@ -1,5 +1,6 @@
 import {Board} from './board';
 import {Turn} from "./turn";
+import {Dice} from "./dice";
 
 export class Player {
     id: number
@@ -11,7 +12,10 @@ export class Player {
      * @return De informatie over deze gooi-beurt
      */
     takeTurn(board: Board) : Turn {
-        // TODO: Ymre
-        return new Turn(1, 0, 1);
+        var dice = new Dice()
+        var steps = dice.roll()
+        var oldPos = board.playerPosition(this)
+        var newPos = board.movePlayer(this, steps)
+        return new Turn(steps, oldPos, newPos);
     }
 }
