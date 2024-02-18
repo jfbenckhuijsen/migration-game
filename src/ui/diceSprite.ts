@@ -47,6 +47,10 @@ export class DiceSprite {
         return this.sprite.ended()
     }
 
+    show(p5: p5) {
+        this.sprite.drawFinal(p5)
+    }
+
     reset() {
         this.sprite.reset()
         this.frame = 0

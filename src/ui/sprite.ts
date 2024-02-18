@@ -32,6 +32,11 @@ export class Sprite {
         }
     }
 
+    drawFinal(p5: p5) {
+        this.index = this.len - 1
+        this.show(p5)
+    }
+
     reset() {
         this.index = 0;
     }

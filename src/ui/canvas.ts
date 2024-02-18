@@ -1,7 +1,6 @@
 import '../style.css';
 import * as p5 from "p5";
 import {Game, GameUI} from "../game/game";
-import {Dice} from '../game/dice';
 import gamemap from "./game-map.png";
 import {Turn} from "../game/turn";
 import {DiceSprite} from "./diceSprite";
@@ -93,6 +92,7 @@ export class Canvas implements GameUI {
     // Animation state
     private dieRolling : boolean = false
     private movePlayer : boolean = false
+    private pathIndex: number = 0
 
     constructor() {
         this.setup()
@@ -102,8 +102,17 @@ export class Canvas implements GameUI {
 
     }
 
-    private static squarePosition(pos: number): Array<number> {
-        return Canvas.SQUARE_LOCATIONS[pos].slice(1)
+    private static squarePosition(pos: number, index: number): Array<number> {
+        let coord = Canvas.SQUARE_LOCATIONS[pos].slice(1)
+
+        let x = coord[0]
+        let y = coord[1]
+
+        if (pos == 0) {
+            // On position 0, we want to show the Pions side by side instead of overlapping
+            x = x + index * 20
+        }
+        return [x, y]
     }
 
     private setup(): void {
@@ -129,8 +138,8 @@ export class Canvas implements GameUI {
                 }
 
                 for (let i = 0; i < Canvas.NUMBER_OF_PLAYERS; i++) {
-                    let coord = Canvas.squarePosition(0)
-                    this.players.push(new PlayerSprite(i, coord[0] + i * 10, coord[1]))
+                    let coord = Canvas.squarePosition(0, i)
+                    this.players.push(new PlayerSprite(i, coord[0], coord[1]))
 
                     var info = new PlayerInfo(this.game,
                         this.game.players[i],
@@ -152,6 +161,7 @@ export class Canvas implements GameUI {
             }
 
             sketch.rollDice = () => {
+                this.pathIndex = 0
                 this.turn = this.game.takeTurn()
 
                 this.dies[this.turn.diceValue - 1].reset()
@@ -170,50 +180,90 @@ export class Canvas implements GameUI {
                 })
             }
 
-            sketch.drawPlayer = (player: Player, index: number) => {
-                let pos = this.game.board.playerPosition(player)
+            sketch.drawPlayerOnPosition = (player: Player, index: number, pos: number) => {
                 if (pos == undefined) {
                     pos = 0
                 }
-                let coord = Canvas.squarePosition(pos)
+                let coord = Canvas.squarePosition(pos, index)
+                this.players[index].drawAt(sketch, coord[0], coord[1])
+            }
 
-                let x = coord[0]
-                let y = coord[1]
-
-                if (pos == 0) {
-                    // On position 0, we want to show the Pions side by side instead of overlapping
-                    x = x + index * 20
-                }
-
-                this.players[index].drawAt(sketch, x, y)
+            sketch.drawPlayer = (player: Player, index: number) => {
+                let pos = this.game.board.playerPosition(player)
+                sketch.drawPlayerOnPosition(player, index, pos)
             }
 
             sketch.drawPlayers = () => {
                 this.game.players.forEach((player, index) => {
-                    if (!this.movePlayer || !this.game.isCurrent(player)) {
+                    if (this.game.isCurrent(player)) {
+                        if (this.movePlayer) {
+                            // We are animating the move
+                            sketch.animatePlayer()
+                        } else {
+                            if (this.turn) {
+                                // We have made a turn, but haven't started animating yet, draw at the old position
+                                sketch.drawPlayerOnPosition(player, index, this.turn.startingPosition)
+                            } else {
+                                // No turn yet, draw regularly
+                                sketch.drawPlayer(player, index)
+                            }
+                        }
+                    } else {
+                        // Not the current player, just draw it
                         sketch.drawPlayer(player, index)
                     }
                 })
             }
 
-            sketch.draw = () => {
-                if (this.dieRolling) {
-                    sketch.clear()
-                    this.dieRolling = !this.dies[this.turn.diceValue - 1].roll(sketch)
-                    if (!this.dieRolling) {
-                        this.movePlayer = true;
-                    }
-                }
-
-                if (this.movePlayer) {
-                    // TODO: Jeroen: Show currently active player moving across the board
-
-                    // Disable animation once it's done
-                    this.movePlayer = false;
+            sketch.nextPlayerPath = () => {
+                if (this.pathIndex == this.turn.path.length) {
+                    // Done animating the player moving
+                    this.movePlayer = false
+                    this.turn = undefined
+                    this.pathIndex = 0
 
                     this.rollButton.elt.disabled = false
-                }
 
+                    // TODO: end the turn?
+
+                    return
+                }
+                var sprite = this.players[this.game.current.id]
+                var nextPos = this.turn.path[this.pathIndex]
+                var coord = Canvas.squarePosition(nextPos, this.game.current.id)
+
+                sprite.animateTo(coord[0], coord[1])
+
+                this.pathIndex++
+                this.movePlayer = true;
+            }
+
+            sketch.drawDice = () => {
+                if (this.dieRolling) {
+                    this.dieRolling = !this.dies[this.turn.diceValue - 1].roll(sketch)
+                    if (!this.dieRolling) {
+                        // Start player moving animation
+                        sketch.nextPlayerPath()
+                    }
+                } else {
+                    if (this.turn) {
+                        this.dies[this.turn.diceValue - 1].show(sketch)
+                    }
+                }
+            }
+
+            sketch.animatePlayer = () => {
+                var sprite = this.players[this.game.current.id]
+                if (sprite.animateMoving()) {
+                    // Animation has ended, move to the next part of the path
+                    sketch.nextPlayerPath()
+                }
+            }
+
+            sketch.draw = () => {
+                sketch.clear()
+
+                sketch.drawDice()
                 sketch.drawPlayers()
                 sketch.drawInfos()
             }

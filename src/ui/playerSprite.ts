@@ -5,6 +5,8 @@ import {Image} from "p5";
 export class PlayerSprite {
 
     sprite: Sprite
+    targetX: number
+    targetY: number
 
     static spritesheet: Image = undefined
 
@@ -35,6 +37,15 @@ export class PlayerSprite {
         animation.push(image)
 
         this.sprite = new Sprite(animation, px, py, 1, true)
+    }
+
+    animateTo(x: number, y: number) {
+        this.targetX = x
+        this.targetY = y
+    }
+
+    animateMoving(): boolean {
+        return true
     }
 
     drawAt(sketch: p5, x: number, y: number) {
