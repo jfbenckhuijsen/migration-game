@@ -7,6 +7,7 @@ import {DiceSprite} from "./diceSprite";
 import {PlayerColor, PlayerSprite} from "./playerSprite";
 import {Player} from "../game/player";
 import {PlayerInfo} from "./playerInfo";
+import {SquareDescriptions} from "./squareDescriptions";
 
 export class Canvas implements GameUI {
 
@@ -87,6 +88,7 @@ export class Canvas implements GameUI {
     private dies: Array<DiceSprite> = new Array<DiceSprite>()
     private players: Array<PlayerSprite> = new Array<PlayerSprite>()
     private playerInfo: Array<PlayerInfo> = new Array<PlayerInfo>()
+    private descriptions: SquareDescriptions
     private rollButton: p5.Element
 
     // Animation state
@@ -149,6 +151,9 @@ export class Canvas implements GameUI {
                     info.setup(sketch)
                     this.playerInfo.push(info)
                 }
+
+                this.descriptions = new SquareDescriptions(this.game, 0, 300)
+                this.descriptions.setup(sketch)
 
                 this.rollButton = sketch.createButton("roll")
                     .position(10, 70)
@@ -224,6 +229,7 @@ export class Canvas implements GameUI {
 
                     this.rollButton.elt.disabled = false
 
+                    // TODO: when to hide the descriptions
                     // TODO: end the turn?
 
                     return
@@ -233,6 +239,8 @@ export class Canvas implements GameUI {
                 var coord = Canvas.squarePosition(nextPos, this.game.current.id)
 
                 sprite.animateTo(coord[0], coord[1])
+
+                // TODO: Show descriptions for path
 
                 this.pathIndex++
                 this.movePlayer = true;
