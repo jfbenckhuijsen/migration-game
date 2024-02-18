@@ -3,9 +3,14 @@
     margin: 0px;
 }
 
+body {
+    overflow: clip;
+}
+
 .gamemap {
     border: 1px;
-    max-height: 80%;
-    max-width: 80%;
+    max-height: 90%;
+    max-width: 90%;
     width: auto;
+    z-index: -1;
 }
