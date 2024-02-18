@@ -107,4 +107,9 @@ export class Board {
         }
         return undefined;
     }
+
+    squareDescriptionForPath(path: Array<number>): Array<string> {
+        return path.map(index => this.squares[index])
+            .map(square => square.description)
+    }
 }
