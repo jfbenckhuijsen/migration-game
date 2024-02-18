@@ -21,7 +21,7 @@ export class Game {
         this.board = new Board()
 
         for (let i = 0; i < numberOfPlayers; i++) {
-            var player = new Player()
+            var player = new Player(i)
             this.players.push(player)
         }
 
@@ -74,6 +74,18 @@ export class Game {
      */
     winners(): Array<Player> {
         return this.winnerList
+    }
+
+    isCurrent(player: Player) {
+        return this.current == player
+    }
+
+    isWinner(player: Player) {
+        return this.winnerList.indexOf(player) != -1
+    }
+
+    squareDescriptionForPath(path: Array<number>): Array<string> {
+        return this.board.squareDescriptionForPath(path)
     }
 
 }

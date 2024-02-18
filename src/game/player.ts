@@ -12,6 +12,10 @@ export class Player {
     money: number = Player.INITIAL_MONEY
     skipTurns: number = 0
 
+    constructor(id: number) {
+        this.id = id
+    }
+
     /**
      * Laat de huidige speler een beurt spelen door te gooien met de dobbelsteen. Daarna moet de speler naar het juiste
      * vakje gezet worden.
