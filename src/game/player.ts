@@ -4,6 +4,7 @@ import {Dice} from "./dice";
 
 export class Player {
     id: number
+    winner: boolean = false
 
     /**
      * Laat de huidige speler een beurt spelen door te gooien met de dobbelsteen. Daarna moet de speler naar het juiste
