@@ -19,4 +19,8 @@ export class Player {
         var newPos = board.movePlayer(this, steps)
         return new Turn(steps, oldPos, newPos);
     }
+
+    canPlayTurn(): boolean {
+        return !this.winner
+    }
 }
