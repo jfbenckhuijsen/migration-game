@@ -36,7 +36,7 @@ export class Board {
         this.squares[48] = new MovePlayerSquare(48, "A trucker helped you to cross the border go to 51", 3)
         this.squares[53] = new WetClothesSquare(53, "When crossing a river you fell in, now you have to buy new clothes pay \u20AC 40")
         this.squares[59] = new DiedSquare(59, "You ran from the police and you attacked a police officer you got shot, go back to start")
-        this.squares[62] = new SkipTurnSquare(62, "The IND knows your in the country illigaly hide! skip 3 turns", 3)
+        this.squares[62] = new SkipTurnSquare(62, "The IND knows your in the country illegally hide! skip 3 turns", 3)
     }
 
     /**
