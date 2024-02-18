@@ -22,6 +22,6 @@ describe('Players', () => {
         expect(board.playerPosition(player)).toBe(turn.diceValue)
 
         let turn2 = player.takeTurn(board)
-        expect(board.playerPosition(player)).toBeGreaterThan(turn.diceValue + turn2.diceValue)
+        expect(board.playerPosition(player)).toBe(turn.diceValue + turn2.diceValue)
     })
 })
