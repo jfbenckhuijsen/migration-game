@@ -72,9 +72,8 @@ export class Game {
      * Geeft de winnaars van het spel in volgorde die ze gewonnen hebben. Indien er nog geen winnaar is, zal dit een
      * lege lijst opleveren.
      */
-    winner(): Array<Player> {
-        // TODO Ymre
-        return new Array<Player>()
+    winners(): Array<Player> {
+        return this.winnerList
     }
 
 }
