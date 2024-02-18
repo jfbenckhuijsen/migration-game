@@ -77,30 +77,3 @@ export class Finish extends Square {
         player.winner = true
     }
 }
-
-//
-//
-// abstract class Animal {
-//
-//     abstract makeSound(): string
-// }
-//
-// class Dog extends Animal {
-//     name: string
-//
-//     makeSound(): string {
-//         return "Woof"
-//     }
-// }
-//
-// class Cat extends Animal {
-//
-//     makeSound(): string {
-//         return 'miauw';
-//     }
-//
-// }
-// //
-// // var google = new Dog()
-// // google.name = "Google"
-// // google.makeSound()
