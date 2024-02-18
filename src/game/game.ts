@@ -62,11 +62,10 @@ export class Game {
     }
 
     /**
-     * Geef true terug als er een winnaar van het spel is.
+     * Geef true terug als iedereen behalve 1 speler een winnaar is.
      */
     isEnded(): boolean {
-        // TODO Ymre
-        return false;
+        return this.winnerList.length == this.players.length - 1
     }
 
     /**
