@@ -74,7 +74,7 @@ export class Finish extends Square {
      * @param board Het speelbord
      */
     playerLands(player: Player, board: Board) {
-        /// TODO: Ymre
+        player.winner = true
     }
 }
 
