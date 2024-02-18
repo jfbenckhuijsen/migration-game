@@ -10,6 +10,7 @@ export class Player {
     id: number
     winner: boolean = false
     money: number = Player.INITIAL_MONEY
+    skipTurns: number = 0
 
     /**
      * Laat de huidige speler een beurt spelen door te gooien met de dobbelsteen. Daarna moet de speler naar het juiste
@@ -23,11 +24,25 @@ export class Player {
         this.money += steps * Player.MONEY_PER_STEP
 
         var oldPos = board.playerPosition(this)
-        var newPos = board.movePlayer(this, steps)
-        return new Turn(steps, oldPos, newPos);
+        var path = new Array<number>()
+        board.movePlayer(this, steps, path)
+        return new Turn(steps, oldPos, path)
     }
 
     canPlayTurn(): boolean {
+        if (this.skipTurns > 0) {
+            this.skipTurns -= 1
+            return false
+        }
+
         return !this.winner
+    }
+
+    reset() {
+        this.money = Player.INITIAL_MONEY
+    }
+
+    hasMoney(): boolean {
+        return this.money > 0
     }
 }

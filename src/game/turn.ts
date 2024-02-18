@@ -2,11 +2,11 @@
 export class Turn {
     diceValue: number
     startingPosition: number
-    landingPosition: number
+    path: Array<number>
 
-    constructor(diceValue: number, startingPosition: number, landingPosition: number) {
+    constructor(diceValue: number, startingPosition: number, path: Array<number>) {
         this.diceValue = diceValue;
         this.startingPosition = startingPosition;
-        this.landingPosition = landingPosition;
+        this.path = path;
     }
 }
