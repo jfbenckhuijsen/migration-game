@@ -9,8 +9,37 @@ body {
 
 .gamemap {
     border: 1px;
-    max-height: 90%;
-    max-width: 90%;
-    width: auto;
+    width: 1280px;
+    height: auto;
     z-index: -1;
+}
+
+.playerInfo {
+
+}
+
+.playerInfo.BLUE {
+    color: blue;
+}
+
+.playerInfo.RED {
+    color: red;
+
+}
+
+.playerInfo.GREEN {
+    color: green;
+}
+
+.playerInfo.YELLOW {
+    color: yellow;
+}
+
+.playerInfo.goldcoin {
+    width: 16px;
+    height: 16px;
+}
+
+.playerInfo.money {
+    color: white;
 }

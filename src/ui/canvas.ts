@@ -6,12 +6,14 @@ import gamemap from "./game-map.png";
 import {Turn} from "../game/turn";
 import {DiceSprite} from "./diceSprite";
 import {PlayerColor, PlayerSprite} from "./playerSprite";
+import {Player} from "../game/player";
+import {PlayerInfo} from "./playerInfo";
 
 export class Canvas implements GameUI {
 
     static NUMBER_OF_PLAYERS = Object.keys(PlayerColor).length / 2
     static SQUARE_LOCATIONS : Array<Array<number>> = [
-        [0, ],
+        [0, 1150, 660],
         [1, ],
         [2, ],
         [3, ],
@@ -85,6 +87,7 @@ export class Canvas implements GameUI {
     // UI Elements
     private dies: Array<DiceSprite> = new Array<DiceSprite>()
     private players: Array<PlayerSprite> = new Array<PlayerSprite>()
+    private playerInfo: Array<PlayerInfo> = new Array<PlayerInfo>()
     private rollButton: p5.Element
 
     // Animation state
@@ -109,6 +112,7 @@ export class Canvas implements GameUI {
             sketch.preload = () => {
                 DiceSprite.preload(sketch)
                 PlayerSprite.preload(sketch)
+                PlayerInfo.preload(sketch)
             }
 
             sketch.setup = () => {
@@ -125,29 +129,71 @@ export class Canvas implements GameUI {
                 }
 
                 for (let i = 0; i < Canvas.NUMBER_OF_PLAYERS; i++) {
-                    this.players.push(new PlayerSprite(i))
+                    let coord = Canvas.squarePosition(0)
+                    this.players.push(new PlayerSprite(i, coord[0] + i * 10, coord[1]))
+
+                    var info = new PlayerInfo(this.game,
+                        this.game.players[i],
+                        1150,
+                        20 + i * 100
+                    )
+                    info.setup(sketch)
+                    this.playerInfo.push(info)
                 }
 
                 this.rollButton = sketch.createButton("roll")
                     .position(10, 70)
-                    .mouseClicked(() => {
-                        this.turn = this.game.takeTurn()
-
-                        // TODO: Test code -->
-                        let dice = new Dice()
-                        this.turn = new Turn(dice.roll(), 0, [10])
-                        // remove once game logic is implemented <--
-
-                        this.dies[this.turn.diceValue - 1].reset()
-                        this.dieRolling = true
-                        this.movePlayer = false
-                        this.rollButton.elt.disabled = true
-                    })
+                    .mouseClicked(sketch.rollDice)
 
             }
 
             sketch.windowResized = ()  => {
                 sketch.resizeCanvas(sketch.windowWidth, sketch.windowHeight);
+            }
+
+            sketch.rollDice = () => {
+                this.turn = this.game.takeTurn()
+
+                this.dies[this.turn.diceValue - 1].reset()
+                this.dieRolling = true
+                this.movePlayer = false
+                this.rollButton.elt.disabled = true
+            }
+
+            sketch.drawPlayerInfo = (player: Player) => {
+                this.playerInfo[player.id].draw(sketch)
+            }
+
+            sketch.drawInfos = () => {
+                this.game.players.forEach(player => {
+                    sketch.drawPlayerInfo(player)
+                })
+            }
+
+            sketch.drawPlayer = (player: Player, index: number) => {
+                let pos = this.game.board.playerPosition(player)
+                if (pos == undefined) {
+                    pos = 0
+                }
+                let coord = Canvas.squarePosition(pos)
+
+                let x = coord[0]
+                let y = coord[1]
+
+                if (pos == 0) {
+                    // On position 0, we want to show the Pions side by side instead of overlapping
+                    x = x + index * 20
+                }
+
+                this.players[index].drawAt(sketch, x, y)
+            }
+
+            sketch.drawPlayers = () => {
+                this.game.players.forEach((player, index) => {
+                    if (!this.movePlayer || !this.game.isCurrent(player)) {
+                        sketch.drawPlayer(player, index)
+                    }
+                })
             }
 
             sketch.draw = () => {
@@ -162,16 +208,14 @@ export class Canvas implements GameUI {
                 if (this.movePlayer) {
                     // TODO: Jeroen: Show currently active player moving across the board
 
+                    // Disable animation once it's done
+                    this.movePlayer = false;
+
                     this.rollButton.elt.disabled = false
                 }
 
-                this.game.players.forEach((player, index) => {
-                    let pos = this.game.board.playerPosition(player)
-                    let coord = Canvas.squarePosition(pos)
-
-                    // TODO Check for moving of current player
-                    this.players[index].drawAt(coord[0], coord[1])
-                })
+                sketch.drawPlayers()
+                sketch.drawInfos()
             }
         })
     }
