@@ -11,14 +11,15 @@ export interface GameUI {
 export class Game {
     private gameUI: GameUI;
     board: Board
-    players: Array<Player>
+    players: Array<Player> = new Array<Player>()
+    winnerList: Array<Player> = new Array<Player>()
     current: Player
 
     constructor(gameUI: GameUI, numberOfPlayers: number) {
         this.gameUI = gameUI;
 
         this.board = new Board()
-        this.players = new Array<Player>()
+
         for (let i = 0; i < numberOfPlayers; i++) {
             var player = new Player()
             this.players.push(player)
@@ -46,7 +47,18 @@ export class Game {
      * komt niet meer aan de beurt.
      */
     endTurn() {
-        // TODO: Ymre
+        if (this.current.winner) {
+            this.winnerList.push(this.current)
+        }
+
+        var currentIndex = this.players.indexOf(this.current)
+        currentIndex = (currentIndex + 1) % this.players.length
+
+        while (!this.players[currentIndex].canPlayTurn()) {
+            currentIndex = (currentIndex + 1)  % this.players.length
+        }
+
+        this.current = this.players[currentIndex]
     }
 
     /**
