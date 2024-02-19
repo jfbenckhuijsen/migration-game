@@ -132,13 +132,6 @@ export class Canvas implements GameUI {
             sketch.setup = () => {
                 console.log("🚀 - Setup initialized - P5 is running");
 
-                // TODO: Test code -- REMOVE -->
-                this.game.winnerList.push(this.game.players[1])
-                this.game.winnerList.push(this.game.players[2])
-                this.game.winnerList.push(this.game.players[3])
-                this.turn = new Turn(4, 0, [2, 7, 11])
-                // <--
-
                 sketch.createCanvas(sketch.windowWidth, sketch.windowHeight)
                 sketch.rectMode(sketch.CENTER).noFill().frameRate(30);
 
