@@ -7,6 +7,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             title: 'Migration game',
+            template: "src/index.ejs"
         }),
     ],
     output: {
