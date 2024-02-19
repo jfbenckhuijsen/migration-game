@@ -8,6 +8,7 @@ import {PlayerColor, PlayerSprite} from "./playerSprite";
 import {Player} from "../game/player";
 import {PlayerInfo} from "./playerInfo";
 import {SquareDescriptions} from "./squareDescriptions";
+import {WinnerScreen} from "./winnerScreen";
 
 export class Canvas implements GameUI {
 
@@ -89,6 +90,7 @@ export class Canvas implements GameUI {
     private players: Array<PlayerSprite> = new Array<PlayerSprite>()
     private playerInfo: Array<PlayerInfo> = new Array<PlayerInfo>()
     private descriptions: SquareDescriptions
+    private winnerScreen: WinnerScreen
     private rollButton: p5.Element
     private endTurnButton: p5.Element
 
@@ -172,6 +174,8 @@ export class Canvas implements GameUI {
                     .mouseClicked(sketch.endTurn)
                 this.endTurnButton.elt.disabled = true
 
+                this.winnerScreen = new WinnerScreen(this.game)
+                this.winnerScreen.setup(sketch)
             }
 
             sketch.windowResized = ()  => {
@@ -189,11 +193,16 @@ export class Canvas implements GameUI {
             }
 
             sketch.endTurn = () => {
-                this.rollButton.elt.disabled = false
                 this.endTurnButton.elt.disabled = true
 
                 this.descriptions.hide()
                 this.game.endTurn()
+
+                if (this.game.isEnded()) {
+                    this.winnerScreen.show()
+                } else {
+                    this.rollButton.elt.disabled = false
+                }
             }
 
             sketch.drawPlayerInfo = (player: Player) => {

@@ -58,6 +58,31 @@ body {
     padding-bottom: 10px;
 }
 
+.winnerScreen {
+    font-size: medium;
+    font-weight: bold;
+    color: gray;
+    width: 960px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.winnerScreen.hidden {
+    display: none;
+}
+
+.winnerScreen.first {
+    width: 90px;
+}
+
+.winnerScreen.second {
+    width: 80px;
+}
+
+.winnerScreen.third {
+    width: 80px;
+}
+
 button {
     background-image: url('ui/button.png');
     background-size: cover;
