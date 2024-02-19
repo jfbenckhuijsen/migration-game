@@ -206,17 +206,17 @@ export class Canvas implements GameUI {
                 })
             }
 
-            sketch.drawPlayerOnPosition = (index: number, pos: number) => {
+            sketch.movePlayerToPosition = (index: number, pos: number) => {
                 if (pos == undefined) {
                     pos = 0
                 }
                 let coord = Canvas.squarePosition(pos, index)
-                this.players[index].drawAt(sketch, coord[0], coord[1])
+                this.players[index].move(coord[0], coord[1])
             }
 
-            sketch.drawPlayer = (player: Player, index: number) => {
+            sketch.movePlayer = (player: Player, index: number) => {
                 let pos = this.game.board.playerPosition(player)
-                sketch.drawPlayerOnPosition(index, pos)
+                sketch.movePlayerToPosition(index, pos)
             }
 
             sketch.drawPlayers = () => {
@@ -228,17 +228,36 @@ export class Canvas implements GameUI {
                         } else {
                             if (this.turn) {
                                 // We have made a turn, but haven't started animating yet, draw at the old position
-                                sketch.drawPlayerOnPosition(index, this.turn.startingPosition)
+                                sketch.movePlayerToPosition(index, this.turn.startingPosition)
                             } else {
                                 // No turn yet, draw regularly
-                                sketch.drawPlayer(player, index)
+                                sketch.movePlayer(player, index)
                             }
                         }
                     } else {
                         // Not the current player, just draw it
-                        sketch.drawPlayer(player, index)
+                        sketch.movePlayer(player, index)
                     }
                 })
+
+                /*
+                 Sort by y number so we ensure pions more to the back are show behind
+                 those more in front.
+                 */
+                let pions = [...this.players]
+                pions.sort((a,b) => {
+                    if (a.sprite.y == b.sprite.y) {
+                        return 0
+                    } else {
+                        if (a.sprite.y < b.sprite.y) {
+                            return -1
+                        } else {
+                            return 1
+                        }
+                    }
+                })
+
+                pions.forEach(p => p.draw(sketch))
             }
 
             sketch.nextPlayerPath = () => {
@@ -280,7 +299,7 @@ export class Canvas implements GameUI {
 
             sketch.animatePlayer = () => {
                 let sprite = this.players[this.game.current.id]
-                if (sprite.animateMoving(sketch)) {
+                if (sprite.animateMoving()) {
                     // Animation has ended, move to the next part of the path
                     sketch.nextPlayerPath()
                 }

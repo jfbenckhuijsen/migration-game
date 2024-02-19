@@ -56,7 +56,7 @@ export class PlayerSprite {
         this.stepY = dy * pathScale
     }
 
-    animateMoving(sketch: p5): boolean {
+    animateMoving(): boolean {
         let diffX = Math.abs(this.targetX - this.sprite.x)
         let diffY = Math.abs(this.targetY - this.sprite.y)
 
@@ -68,14 +68,16 @@ export class PlayerSprite {
         } else {
             this.sprite.x += this.stepX
             this.sprite.y += this.stepY
-            this.sprite.show(sketch)
             return false
         }
     }
 
-    drawAt(sketch: p5, x: number, y: number) {
+    move(x: number, y: number) {
         this.sprite.x = x
         this.sprite.y = y
+    }
+
+    draw(sketch: p5) {
         this.sprite.show(sketch)
     }
 }
