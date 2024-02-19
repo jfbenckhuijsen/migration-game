@@ -46,9 +46,31 @@ body {
 }
 
 .squareDescription {
-    width: 200px;
+    width: 130px;
+    color: white;
 }
 
 .squareDescription.hidden {
     display: none;
+}
+
+.descriptionRow {
+    padding-bottom: 10px;
+}
+
+button {
+    background-image: url('ui/button.png');
+    background-size: cover;
+    padding: 2px 5px;
+    color: white;
+    font-weight: bold;
+    border-color: #9a705c;
+}
+
+button:focus {
+    background-image: url('ui/button-hover.png');
+}
+
+button:disabled {
+    color: gray;
 }
