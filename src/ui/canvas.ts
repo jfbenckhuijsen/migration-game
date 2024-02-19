@@ -320,7 +320,6 @@ export class Canvas implements GameUI {
                 sketch.drawDice()
                 sketch.drawPlayers()
                 sketch.drawInfos()
-                this.descriptions.showDescriptions(this.turn.path, 1)
             }
         })
     }
