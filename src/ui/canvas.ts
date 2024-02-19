@@ -316,7 +316,9 @@ export class Canvas implements GameUI {
 
                 sketch.drawDice()
                 sketch.drawPlayers()
-                sketch.drawInfos()
+                if (!this.dieRolling) {
+                    sketch.drawInfos()
+                }
             }
         })
     }

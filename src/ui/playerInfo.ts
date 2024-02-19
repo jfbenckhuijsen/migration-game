@@ -14,6 +14,7 @@ export class PlayerInfo {
     y: number
 
     moneyEl: p5.Element
+    statusEl: p5.Element
     dieImage: Image
 
     goldCup: Image
@@ -55,6 +56,11 @@ export class PlayerInfo {
             .addClass("playerInfo")
             .addClass("money")
 
+        this.statusEl = sketch.createDiv("")
+            .position(this.x, this.y + 60)
+            .addClass("playerInfo")
+            .addClass("status")
+
         this.dieImage = this.getDiceFrame(3, 14)
         this.goldCup = this.getCupsFrame(360, 90, 320, 450)
         this.silverCup = this.getCupsFrame(30, 120, 290, 410)
@@ -81,6 +87,7 @@ export class PlayerInfo {
 
     draw(sketch: p5) {
         this.moneyEl.elt.innerHTML = `\u20AC  ${this.player.money}`
+        this.statusEl.elt.innerHTML = this.playerStatus()
         if (this.game.isCurrent(this.player)) {
             sketch.image(this.dieImage, this.x, this.y)
         } else if (this.game.isWinner(this.player)) {
@@ -89,6 +96,14 @@ export class PlayerInfo {
             let cup = this.cups[cupIndex]
             sketch.image(cup, this.x, this.y)
         }
+    }
+
+    private playerStatus(): string {
+        let result = ""
+        if (this.player.skipTurns > 0) {
+            result += `&#9940; ${this.player.skipTurns}`
+        }
+        return result
     }
 
 }

@@ -19,7 +19,6 @@ body {
 }
 
 .playerInfo {
-
 }
 
 .playerInfo.BLUE {
@@ -45,6 +44,10 @@ body {
 }
 
 .playerInfo.money {
+    color: white;
+}
+
+.playerInfo.status {
     color: white;
 }
 
