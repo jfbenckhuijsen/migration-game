@@ -20,7 +20,7 @@ export class PlayerSprite {
     ]
 
     static SPRITE_DIMENSIONS = [90, 360]
-    static MOVE_TIME = 2.0 * 30.0
+    static MOVE_TIME = 8.0 * 30.0
 
     static preload(sketch: p5) {
         PlayerSprite.spritesheet = sketch.loadImage(pions)

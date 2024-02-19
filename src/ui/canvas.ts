@@ -13,8 +13,9 @@ import {WinnerScreen} from "./winnerScreen";
 export class Canvas implements GameUI {
 
     static NUMBER_OF_PLAYERS = Object.keys(PlayerColor).length / 2
+    static MAP_SCALE = 1280.0 / 1820.0
     static SQUARE_LOCATIONS : Array<Array<number>> = [
-        [0, 1150, 660],
+        [0, 1635, 940],
         [1, ],
         [2, ],
         [3, ],
@@ -79,6 +80,7 @@ export class Canvas implements GameUI {
         [62, ],
         [63, ],
     ]
+
     private myp5: p5
 
     // Game data
@@ -110,8 +112,8 @@ export class Canvas implements GameUI {
     private static squarePosition(pos: number, index: number): Array<number> {
         let coord = Canvas.SQUARE_LOCATIONS[pos].slice(1)
 
-        let x = coord[0]
-        let y = coord[1]
+        let x = coord[0] * Canvas.MAP_SCALE
+        let y = coord[1] * Canvas.MAP_SCALE
 
         if (pos == 0) {
             // On position 0, we want to show the Pions side by side instead of overlapping
@@ -187,6 +189,7 @@ export class Canvas implements GameUI {
 
             sketch.endTurn = () => {
                 this.endTurnButton.elt.disabled = true
+                this.turn = undefined
 
                 this.descriptions.hide()
                 this.game.endTurn()
@@ -266,7 +269,8 @@ export class Canvas implements GameUI {
                 if (this.pathIndex == this.turn.path.length) {
                     // Done animating the player moving
                     this.movePlayer = false
-                    this.turn = undefined
+                    // Ensure the player is drawn at the end position
+                    this.turn.startingPosition = this.turn.path[this.pathIndex - 1]
                     this.pathIndex = 0
 
                     this.endTurnButton.elt.disabled = false
@@ -293,7 +297,7 @@ export class Canvas implements GameUI {
                         sketch.nextPlayerPath()
                     }
                 } else {
-                    if (this.turn) {
+                    if (this.turn != undefined) {
                         this.dies[this.turn.diceValue - 1].show(sketch)
                     }
                 }
