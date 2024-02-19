@@ -27,7 +27,7 @@ export class SquareDescriptions {
         let descriptions = this.game.squareDescriptionForPath(path)
 
         this.div.elt.innerHTML = descriptions
-            .map((d, i) => this.decorate(d, i == index))
+            .map((d, i) => this.decorate(d, path[i], i == index))
             .join("")
         this.div.removeClass('hidden')
     }
@@ -36,11 +36,12 @@ export class SquareDescriptions {
         this.div.addClass('hidden')
     }
 
-    private decorate(description: string, current: boolean) {
-        let result = "<p>"
+    private decorate(description: string, square: number, current: boolean) {
+        let result = "<p class='descriptionRow'>"
         if (current) {
             result += "<b>"
         }
+        result += square + ' : '
         result += description
         if (current) {
             result += "</b>"

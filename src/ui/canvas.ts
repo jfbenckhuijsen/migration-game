@@ -90,6 +90,7 @@ export class Canvas implements GameUI {
     private playerInfo: Array<PlayerInfo> = new Array<PlayerInfo>()
     private descriptions: SquareDescriptions
     private rollButton: p5.Element
+    private endTurnButton: p5.Element
 
     // Animation state
     private dieRolling : boolean = false
@@ -129,6 +130,13 @@ export class Canvas implements GameUI {
             sketch.setup = () => {
                 console.log("🚀 - Setup initialized - P5 is running");
 
+                // TODO: Test code -- REMOVE -->
+                this.game.winnerList.push(this.game.players[1])
+                this.game.winnerList.push(this.game.players[2])
+                this.game.winnerList.push(this.game.players[3])
+                this.turn = new Turn(4, 0, [2, 7, 11])
+                // <--
+
                 sketch.createCanvas(sketch.windowWidth, sketch.windowHeight)
                 sketch.rectMode(sketch.CENTER).noFill().frameRate(30);
 
@@ -143,7 +151,7 @@ export class Canvas implements GameUI {
                     let coord = Canvas.squarePosition(0, i)
                     this.players.push(new PlayerSprite(i, coord[0], coord[1]))
 
-                    var info = new PlayerInfo(this.game,
+                    let info = new PlayerInfo(this.game,
                         this.game.players[i],
                         1150,
                         20 + i * 100
@@ -152,12 +160,17 @@ export class Canvas implements GameUI {
                     this.playerInfo.push(info)
                 }
 
-                this.descriptions = new SquareDescriptions(this.game, 0, 300)
+                this.descriptions = new SquareDescriptions(this.game, 0, 400)
                 this.descriptions.setup(sketch)
 
-                this.rollButton = sketch.createButton("roll")
-                    .position(10, 70)
+                this.rollButton = sketch.createButton("Roll")
+                    .position(10, 80)
                     .mouseClicked(sketch.rollDice)
+
+                this.endTurnButton = sketch.createButton( "End turn")
+                    .position(60, 80)
+                    .mouseClicked(sketch.endTurn)
+                this.endTurnButton.elt.disabled = true
 
             }
 
@@ -175,6 +188,14 @@ export class Canvas implements GameUI {
                 this.rollButton.elt.disabled = true
             }
 
+            sketch.endTurn = () => {
+                this.rollButton.elt.disabled = false
+                this.endTurnButton.elt.disabled = true
+
+                this.descriptions.hide()
+                this.game.endTurn()
+            }
+
             sketch.drawPlayerInfo = (player: Player) => {
                 this.playerInfo[player.id].draw(sketch)
             }
@@ -185,7 +206,7 @@ export class Canvas implements GameUI {
                 })
             }
 
-            sketch.drawPlayerOnPosition = (player: Player, index: number, pos: number) => {
+            sketch.drawPlayerOnPosition = (index: number, pos: number) => {
                 if (pos == undefined) {
                     pos = 0
                 }
@@ -195,7 +216,7 @@ export class Canvas implements GameUI {
 
             sketch.drawPlayer = (player: Player, index: number) => {
                 let pos = this.game.board.playerPosition(player)
-                sketch.drawPlayerOnPosition(player, index, pos)
+                sketch.drawPlayerOnPosition(index, pos)
             }
 
             sketch.drawPlayers = () => {
@@ -207,7 +228,7 @@ export class Canvas implements GameUI {
                         } else {
                             if (this.turn) {
                                 // We have made a turn, but haven't started animating yet, draw at the old position
-                                sketch.drawPlayerOnPosition(player, index, this.turn.startingPosition)
+                                sketch.drawPlayerOnPosition(index, this.turn.startingPosition)
                             } else {
                                 // No turn yet, draw regularly
                                 sketch.drawPlayer(player, index)
@@ -227,20 +248,17 @@ export class Canvas implements GameUI {
                     this.turn = undefined
                     this.pathIndex = 0
 
-                    this.rollButton.elt.disabled = false
-
-                    // TODO: when to hide the descriptions
-                    // TODO: end the turn?
+                    this.endTurnButton.elt.disabled = false
 
                     return
                 }
-                var sprite = this.players[this.game.current.id]
-                var nextPos = this.turn.path[this.pathIndex]
-                var coord = Canvas.squarePosition(nextPos, this.game.current.id)
+                let sprite = this.players[this.game.current.id]
+                let nextPos = this.turn.path[this.pathIndex]
+                let coord = Canvas.squarePosition(nextPos, this.game.current.id)
 
                 sprite.animateTo(coord[0], coord[1])
 
-                // TODO: Show descriptions for path
+                this.descriptions.showDescriptions(this.turn.path, this.pathIndex)
 
                 this.pathIndex++
                 this.movePlayer = true;
@@ -261,8 +279,8 @@ export class Canvas implements GameUI {
             }
 
             sketch.animatePlayer = () => {
-                var sprite = this.players[this.game.current.id]
-                if (sprite.animateMoving()) {
+                let sprite = this.players[this.game.current.id]
+                if (sprite.animateMoving(sketch)) {
                     // Animation has ended, move to the next part of the path
                     sketch.nextPlayerPath()
                 }
@@ -274,8 +292,11 @@ export class Canvas implements GameUI {
                 sketch.drawDice()
                 sketch.drawPlayers()
                 sketch.drawInfos()
+                this.descriptions.showDescriptions(this.turn.path, 1)
             }
         })
     }
 
 }
+
+// TODO: <a href="https://www.freepik.com/free-vector/golden-silver-bronze-metallic-trophy-cup-set-isolated-vector-illustration_1158422.htm">Image by macrovector</a> on Freepik

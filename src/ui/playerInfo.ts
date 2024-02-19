@@ -2,6 +2,7 @@ import {Player} from "../game/player";
 import {Image} from "p5";
 import * as p5 from "p5";
 import goldcoin from "./gold-coin-dollar-icon.png"
+import cups from "./cups.png"
 import {PlayerColor} from "./playerSprite";
 import die from "./six_sided_die.png";
 import {Game} from "../game/game";
@@ -15,8 +16,15 @@ export class PlayerInfo {
     moneyEl: p5.Element
     dieImage: Image
 
+    goldCup: Image
+    silverCup: Image
+    bronzeCup: Image
+
+    cups: Array<Image> = new Array<Image>()
+
     static goldCoin: Image
-    static dies: Image
+    static dice: Image
+    static cups: Image
 
     constructor(game: Game, player: Player, x : number, y: number) {
         this.game = game
@@ -27,7 +35,8 @@ export class PlayerInfo {
 
     static preload(sketch: p5) {
         PlayerInfo.goldCoin = sketch.loadImage(goldcoin)
-        PlayerInfo.dies = sketch.loadImage(die)
+        PlayerInfo.dice = sketch.loadImage(die)
+        PlayerInfo.cups = sketch.loadImage(cups)
     }
 
     setup(sketch: p5) {
@@ -46,13 +55,27 @@ export class PlayerInfo {
             .addClass("playerInfo")
             .addClass("money")
 
-        this.dieImage = this.getSpriteFrame(3, 14)
+        this.dieImage = this.getDiceFrame(3, 14)
+        this.goldCup = this.getCupsFrame(360, 90, 320, 450)
+        this.silverCup = this.getCupsFrame(30, 120, 290, 410)
+        this.bronzeCup = this.getCupsFrame(720, 120, 290, 410)
+
+        this.cups.push(this.goldCup)
+        this.cups.push(this.silverCup)
+        this.cups.push(this.bronzeCup)
     }
 
-    private getSpriteFrame(col : number, row: number): Image {
-        var img = PlayerInfo.dies
+    private getDiceFrame(col : number, row: number): Image {
+        let img = PlayerInfo.dice
             .get(col * 16, row * 16, 16, 16)
         img.resize(16, 16)
+        return img
+    }
+
+    private getCupsFrame(x: number, y: number, w: number, h: number): Image {
+        let img = PlayerInfo.cups
+            .get(x, y, w, h)
+        img.resize(12, 16)
         return img
     }
 
@@ -61,7 +84,10 @@ export class PlayerInfo {
         if (this.game.isCurrent(this.player)) {
             sketch.image(this.dieImage, this.x, this.y)
         } else if (this.game.isWinner(this.player)) {
-            // TODO: Draw a cup image of some sorts
+            let cupIndex = this.game.placedAt(this.player)
+            cupIndex = Math.min(cupIndex, this.cups.length - 1)
+            let cup = this.cups[cupIndex]
+            sketch.image(cup, this.x, this.y)
         }
     }
 

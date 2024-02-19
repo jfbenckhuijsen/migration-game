@@ -7,6 +7,8 @@ export class PlayerSprite {
     sprite: Sprite
     targetX: number
     targetY: number
+    stepX: number
+    stepY: number
 
     static spritesheet: Image = undefined
 
@@ -18,6 +20,7 @@ export class PlayerSprite {
     ]
 
     static SPRITE_DIMENSIONS = [90, 360]
+    static MOVE_TIME = 2.0 * 30.0
 
     static preload(sketch: p5) {
         PlayerSprite.spritesheet = sketch.loadImage(pions)
@@ -42,10 +45,32 @@ export class PlayerSprite {
     animateTo(x: number, y: number) {
         this.targetX = x
         this.targetY = y
+
+        let dx = this.targetX - this.sprite.x
+        let dy = this.targetY - this.sprite.y
+
+        let pathLength = Math.sqrt(dx * dx + dy * dy)
+        let pathScale = pathLength / PlayerSprite.MOVE_TIME
+
+        this.stepX = dx * pathScale
+        this.stepY = dy * pathScale
     }
 
-    animateMoving(): boolean {
-        return true
+    animateMoving(sketch: p5): boolean {
+        let diffX = Math.abs(this.targetX - this.sprite.x)
+        let diffY = Math.abs(this.targetY - this.sprite.y)
+
+        // Check if we want to finish moving
+        if (diffX < Math.abs(this.stepX) || diffY < Math.abs(this.stepY)) {
+            this.sprite.x = this.targetX
+            this.sprite.y = this.targetY
+            return true
+        } else {
+            this.sprite.x += this.stepX
+            this.sprite.y += this.stepY
+            this.sprite.show(sketch)
+            return false
+        }
     }
 
     drawAt(sketch: p5, x: number, y: number) {
