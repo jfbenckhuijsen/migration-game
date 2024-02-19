@@ -84,6 +84,20 @@ export class Game {
         return this.winnerList.indexOf(player) != -1
     }
 
+    /**
+     * Returns the place the player finished
+     * @param player The player
+     * @return the place (0-indexed) or -1 if the player is not a winner
+     */
+    placedAt(player: Player): number {
+        return this.winnerList.indexOf(player)
+    }
+
+    /**
+     * Return the descriptions for the path the user has taken. Includes empty
+     * descriptions for normal squares
+     * @param path The path
+     */
     squareDescriptionForPath(path: Array<number>): Array<string> {
         return this.board.squareDescriptionForPath(path)
     }
