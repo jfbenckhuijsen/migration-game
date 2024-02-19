@@ -37,6 +37,10 @@ export class SquareDescriptions {
     }
 
     private decorate(description: string, square: number, current: boolean) {
+        if (description == "") {
+            return ""
+        }
+
         let result = "<p class='descriptionRow'>"
         if (current) {
             result += "<b>"
