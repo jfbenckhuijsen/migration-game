@@ -102,5 +102,13 @@ export class Game {
         return this.board.squareDescriptionForPath(path)
     }
 
-}
+    /**
+     * Return the players other than the current player
+     * @param player The current player
+     * @return the list of other players
+     */
+    otherPlayers(player: Player): Array<Player> {
+        return this.players.filter(p => p != player)
+    }
 
+}

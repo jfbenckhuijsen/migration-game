@@ -89,6 +89,18 @@ body {
     width: 80px;
 }
 
+.shopScreen.goldcoin {
+    width: 16px;
+    height: 16px;
+}
+.shopScreen.cost {
+    color: white;
+}
+
+.shopScreen.hidden {
+    display: none;
+}
+
 button {
     background-image: url('ui/button.png');
     background-size: cover;

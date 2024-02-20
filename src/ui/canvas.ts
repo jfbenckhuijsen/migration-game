@@ -9,6 +9,8 @@ import {Player} from "../game/player";
 import {PlayerInfo} from "./playerInfo";
 import {SquareDescriptions} from "./squareDescriptions";
 import {WinnerScreen} from "./winnerScreen";
+import {ShopScreen} from "./shopScreen";
+import {Shop} from "../game/shop";
 
 export class Canvas implements GameUI {
 
@@ -85,12 +87,14 @@ export class Canvas implements GameUI {
 
     // Game data
     private game = new Game(this, Canvas.NUMBER_OF_PLAYERS)
+    private shop = new Shop()
     private turn: Turn
 
     // UI Elements
     private dies: Array<DiceSprite> = new Array<DiceSprite>()
     private players: Array<PlayerSprite> = new Array<PlayerSprite>()
     private playerInfo: Array<PlayerInfo> = new Array<PlayerInfo>()
+    private shopScreens: Array<ShopScreen> = new Array<ShopScreen>()
     private descriptions: SquareDescriptions
     private winnerScreen: WinnerScreen
     private rollButton: p5.Element
@@ -132,6 +136,7 @@ export class Canvas implements GameUI {
                 DiceSprite.preload(sketch)
                 PlayerSprite.preload(sketch)
                 PlayerInfo.preload(sketch)
+                ShopScreen.preload(sketch)
             }
 
             sketch.setup = () => {
@@ -159,6 +164,14 @@ export class Canvas implements GameUI {
                     info.setup(sketch)
                     this.playerInfo.push(info)
                 }
+
+                for (let i = 0; i < Canvas.NUMBER_OF_PLAYERS; i++) {
+                    let screen = new ShopScreen(this.game.players[i], this.game, this.shop)
+                    screen.setup(sketch, 1150, 420)
+                    this.shopScreens.push(screen)
+                }
+
+                sketch.showShopForPlayer()
 
                 this.descriptions = new SquareDescriptions(this.game, 0, 400)
                 this.descriptions.setup(sketch)
@@ -196,6 +209,7 @@ export class Canvas implements GameUI {
 
                 this.descriptions.hide()
                 this.game.endTurn()
+                sketch.showShopForPlayer()
 
                 if (this.game.isEnded()) {
                     this.winnerScreen.show()
@@ -225,6 +239,10 @@ export class Canvas implements GameUI {
             sketch.movePlayer = (player: Player, index: number) => {
                 let pos = this.game.board.playerPosition(player)
                 sketch.movePlayerToPosition(index, pos)
+            }
+
+            sketch.showShopForPlayer = () => {
+                this.shopScreens.forEach(screen => screen.showForPlayer(this.game.current))
             }
 
             sketch.drawPlayers = () => {
@@ -329,3 +347,20 @@ export class Canvas implements GameUI {
 }
 
 // TODO: <a href="https://www.freepik.com/free-vector/golden-silver-bronze-metallic-trophy-cup-set-isolated-vector-illustration_1158422.htm">Image by macrovector</a> on Freepik
+
+
+/*
+ TODO: UI
+ - Shop screen
+ - Animatie van lopen gaat te snel
+ - Status van gekochte items
+ - Aantal spelers kiezen
+
+ TODO: Game
+ - Checken van alle speciale vakjes (bv 13)
+ - Kopen van items en werking binnen het spel
+ - Op internet zetten
+ - Van het finish vakje afhalen na landen
+ - Playtesting
+ - Undefined error at board.ts:78 at end of game
+ */
