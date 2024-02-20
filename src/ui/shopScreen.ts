@@ -119,11 +119,11 @@ export class ShopScreen {
                 .position(x, y + index * 25)
 
             let img = sketch.createImg(goldcoin, "")
-                .position(x  + 80, y + index * 25)
+                .position(x  + 70, y + index * 25)
                 .addClass("goldcoin")
 
             let cost = sketch.createDiv(`\u20AC ${b.cost}`)
-                .position(x + 100, y + index * 25)
+                .position(x + 90, y + index * 25)
                 .addClass("cost")
 
             this.elements.push(b.button)
