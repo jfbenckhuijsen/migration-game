@@ -19,7 +19,8 @@ export class PlayerSprite {
         [359, 92]
     ]
 
-    static SPRITE_DIMENSIONS = [90, 360]
+    static SRC_SPRITE_DIMENSIONS = [90, 360]
+    static SPRITE_DIMENSIONS = [16,64]
     static MOVE_TIME = 8.0 * 30.0
 
     static preload(sketch: p5) {
@@ -31,11 +32,11 @@ export class PlayerSprite {
 
         let x = PlayerSprite.SPRITE_LOCATIONS[color][0]
         let y = PlayerSprite.SPRITE_LOCATIONS[color][1]
-        let w = PlayerSprite.SPRITE_DIMENSIONS[0]
-        let h = PlayerSprite.SPRITE_DIMENSIONS[1]
+        let w = PlayerSprite.SRC_SPRITE_DIMENSIONS[0]
+        let h = PlayerSprite.SRC_SPRITE_DIMENSIONS[1]
 
         let image = PlayerSprite.spritesheet.get(x, y, w, h)
-        image.resize(16, 64)
+        image.resize(PlayerSprite.SPRITE_DIMENSIONS[0], PlayerSprite.SPRITE_DIMENSIONS[1])
 
         animation.push(image)
 
