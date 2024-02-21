@@ -1,13 +1,15 @@
-import {Items} from "./items";
+import {Items, RollAnExtraDice} from "./items";
 import {Player} from "./player";
 
 export class Shop {
 
     buyVisa(player: Player) {
-
+        let item = new RollAnExtraDice(player)
+        item.buy()
     }
     buyRollAnExtraDice(player: Player) {
-
+        let item = new RollAnExtraDice(player)
+        item.buy()
     }
     buyDoubleMoneyFor1Turn(player: Player) {
 

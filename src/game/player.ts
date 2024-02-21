@@ -11,6 +11,8 @@ export class Player {
     winner: boolean = false
     money: number = Player.INITIAL_MONEY
     skipTurns: number = 0
+    doubleMoney: number = 1
+    rollDouble: number = 1
 
     constructor(id: number) {
         this.id = id
@@ -25,11 +27,18 @@ export class Player {
     takeTurn(board: Board) : Turn {
         let dice = new Dice()
         let steps = dice.roll()
-        this.money += steps * Player.MONEY_PER_STEP
 
+        this.money += steps * Player.MONEY_PER_STEP * this.doubleMoney
+
+        steps *= this.rollDouble
         let oldPos = board.playerPosition(this)
         let path = new Array<number>()
         board.movePlayer(this, steps, path)
+
+        // reset bought items
+        this.doubleMoney = 1
+        this.rollDouble = 1
+
         return new Turn(steps, oldPos, path)
     }
 
@@ -56,16 +65,11 @@ export class Player {
     }
 
     doubleSpaces(): boolean {
-        // TODO: Ymre
-
-        return false
-
+        return this.rollDouble == 2
     }
 
     negativeSpaces(): boolean {
-        // TODO: Ymre
-
-        return false
+        return this.rollDouble == -1
     }
 
     hasExtraDice(): boolean {
@@ -76,10 +80,7 @@ export class Player {
     }
 
     hasDoubleMoney(): boolean {
-        // TODO: Ymre
-
-        return false
-
+        return this.doubleMoney == 2;
     }
 
 

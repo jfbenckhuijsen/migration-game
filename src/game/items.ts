@@ -3,7 +3,7 @@ import {Player} from "./player";
 export abstract class Items {
     owner: Player
     cost: number
-    constructor(owner: Player, cost: number) {
+    protected constructor(owner: Player, cost: number) {
         this.owner = owner
         this.cost = cost
     }
@@ -32,22 +32,32 @@ export class StealMoney extends Items {
 
     static readonly COST = 120;
 
-    constructor(owner: Player) {
+    target: Player
+
+    constructor(owner: Player, target: Player) {
         super(owner, StealMoney.COST);
+        this.target = target
     }
 
     doBuy(): void {
+        let moneyToSteal = Math.min(this.target.money, 100)
+
+        this.target.money -= moneyToSteal
+        this.owner.money += moneyToSteal
     }
 
 }
 export class MakeSomeoneSkipATurn extends Items {
     static readonly COST = 80;
 
-    constructor(owner: Player) {
+    target: Player
+    constructor(owner: Player, target: Player) {
         super(owner, MakeSomeoneSkipATurn.COST);
+        this.target = target
     }
 
     doBuy(): void {
+        this.target.skipTurns += 1
     }
 
 }
@@ -65,11 +75,19 @@ export class RollAnExtraDice extends Items {
 export class RollForNegativeSpaces extends Items {
     static readonly COST = 150;
 
-    constructor(owner: Player) {
+    target: Player
+
+    constructor(owner: Player, target: Player) {
         super(owner, RollForNegativeSpaces.COST);
+        this.target = target
     }
 
     doBuy(): void {
+        if (this.target.rollDouble == 2) {
+            this.target.rollDouble = 1
+        } else {
+            this.target.rollDouble = -1
+        }
     }
 
 }
@@ -81,6 +99,7 @@ export class DoubleMoneyFor1Turn extends Items {
     }
 
     doBuy(): void {
+        this.owner.doubleMoney = 2
     }
 
 }
@@ -92,6 +111,11 @@ export class NextRollIsDouble extends Items {
     }
 
     doBuy(): void {
+        if (this.owner.rollDouble == -1) {
+            this.owner.rollDouble = 1
+        } else {
+            this.owner.rollDouble = 2
+        }
     }
 
 }
