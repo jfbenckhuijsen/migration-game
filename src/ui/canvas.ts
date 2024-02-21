@@ -104,6 +104,7 @@ export class Canvas implements GameUI {
     private dieRolling : boolean = false
     private movePlayer : boolean = false
     private pathIndex: number = 0
+    private playerAnimPos: number = undefined
 
     constructor() {
         this.setup()
@@ -130,7 +131,9 @@ export class Canvas implements GameUI {
     }
 
     private setup(): void {
-        this.myp5 = new p5((sketch) => {
+        let self = this
+
+        self.myp5 = new p5((sketch) => {
 
             sketch.preload = () => {
                 DiceSprite.preload(sketch)
@@ -149,44 +152,44 @@ export class Canvas implements GameUI {
                 mapImg.elt.className = 'gamemap'
 
                 for (let i = 0; i < 6; i++) {
-                    this.dies.push(new DiceSprite(i + 1, 10, 40))
+                    self.dies.push(new DiceSprite(i + 1, 10, 40))
                 }
 
                 for (let i = 0; i < Canvas.NUMBER_OF_PLAYERS; i++) {
                     let coord = Canvas.squarePosition(0, i)
-                    this.players.push(new PlayerSprite(i, coord[0], coord[1]))
+                    self.players.push(new PlayerSprite(i, coord[0], coord[1]))
 
-                    let info = new PlayerInfo(this.game,
-                        this.game.players[i],
+                    let info = new PlayerInfo(self.game,
+                        self.game.players[i],
                         1150,
                         20 + i * 100
                     )
                     info.setup(sketch)
-                    this.playerInfo.push(info)
+                    self.playerInfo.push(info)
                 }
 
                 for (let i = 0; i < Canvas.NUMBER_OF_PLAYERS; i++) {
-                    let screen = new ShopScreen(this.game.players[i], this.game, this.shop)
+                    let screen = new ShopScreen(self.game.players[i], self.game, self.shop)
                     screen.setup(sketch, 1150, 420)
-                    this.shopScreens.push(screen)
+                    self.shopScreens.push(screen)
                 }
 
                 sketch.showShopForPlayer()
 
-                this.descriptions = new SquareDescriptions(this.game, 0, 400)
-                this.descriptions.setup(sketch)
+                self.descriptions = new SquareDescriptions(self.game, 0, 400)
+                self.descriptions.setup(sketch)
 
-                this.rollButton = sketch.createButton("Roll")
+                self.rollButton = sketch.createButton("Roll")
                     .position(10, 80)
                     .mouseClicked(sketch.rollDice)
 
-                this.endTurnButton = sketch.createButton( "End turn")
+                self.endTurnButton = sketch.createButton( "End turn")
                     .position(60, 80)
                     .mouseClicked(sketch.endTurn)
-                this.endTurnButton.elt.disabled = true
+                self.endTurnButton.elt.disabled = true
 
-                this.winnerScreen = new WinnerScreen(this.game)
-                this.winnerScreen.setup(sketch)
+                self.winnerScreen = new WinnerScreen(self.game)
+                self.winnerScreen.setup(sketch)
             }
 
             sketch.windowResized = ()  => {
@@ -194,36 +197,36 @@ export class Canvas implements GameUI {
             }
 
             sketch.rollDice = () => {
-                this.pathIndex = 0
-                this.turn = this.game.takeTurn()
+                self.pathIndex = 0
+                self.turn = self.game.takeTurn()
 
-                this.dies[this.turn.diceValue - 1].reset()
-                this.dieRolling = true
-                this.movePlayer = false
-                this.rollButton.elt.disabled = true
+                self.dies[self.turn.diceValue - 1].reset()
+                self.dieRolling = true
+                self.movePlayer = false
+                self.rollButton.elt.disabled = true
             }
 
             sketch.endTurn = () => {
-                this.endTurnButton.elt.disabled = true
-                this.turn = undefined
+                self.endTurnButton.elt.disabled = true
+                self.turn = undefined
 
-                this.descriptions.hide()
-                this.game.endTurn()
+                self.descriptions.hide()
+                self.game.endTurn()
                 sketch.showShopForPlayer()
 
-                if (this.game.isEnded()) {
-                    this.winnerScreen.show()
+                if (self.game.isEnded()) {
+                    self.winnerScreen.show()
                 } else {
-                    this.rollButton.elt.disabled = false
+                    self.rollButton.elt.disabled = false
                 }
             }
 
             sketch.drawPlayerInfo = (player: Player) => {
-                this.playerInfo[player.id].draw(sketch)
+                self.playerInfo[player.id].draw(sketch)
             }
 
             sketch.drawInfos = () => {
-                this.game.players.forEach(player => {
+                self.game.players.forEach(player => {
                     sketch.drawPlayerInfo(player)
                 })
             }
@@ -233,28 +236,28 @@ export class Canvas implements GameUI {
                     pos = 0
                 }
                 let coord = Canvas.squarePosition(pos, index)
-                this.players[index].move(coord[0], coord[1])
+                self.players[index].move(coord[0], coord[1])
             }
 
             sketch.movePlayer = (player: Player, index: number) => {
-                let pos = this.game.board.playerPosition(player)
+                let pos = self.game.board.playerPosition(player)
                 sketch.movePlayerToPosition(index, pos)
             }
 
             sketch.showShopForPlayer = () => {
-                this.shopScreens.forEach(screen => screen.showForPlayer(this.game.current))
+                self.shopScreens.forEach(screen => screen.showForPlayer(self.game.current))
             }
 
             sketch.drawPlayers = () => {
-                this.game.players.forEach((player, index) => {
-                    if (this.game.isCurrent(player)) {
-                        if (this.movePlayer) {
+                self.game.players.forEach((player, index) => {
+                    if (self.game.isCurrent(player)) {
+                        if (self.movePlayer) {
                             // We are animating the move
                             sketch.animatePlayer()
                         } else {
-                            if (this.turn) {
+                            if (self.turn) {
                                 // We have made a turn, but haven't started animating yet, draw at the old position
-                                sketch.movePlayerToPosition(index, this.turn.startingPosition)
+                                sketch.movePlayerToPosition(index, self.turn.startingPosition)
                             } else {
                                 // No turn yet, draw regularly
                                 sketch.movePlayer(player, index)
@@ -270,7 +273,7 @@ export class Canvas implements GameUI {
                  Sort by y number so we ensure pions more to the back are show behind
                  those more in front.
                  */
-                let pions = [...this.players]
+                let pions = [...self.players]
                 pions.sort((a,b) => {
                     if (a.sprite.y == b.sprite.y) {
                         return 0
@@ -287,45 +290,59 @@ export class Canvas implements GameUI {
             }
 
             sketch.nextPlayerPath = () => {
-                if (this.pathIndex == this.turn.path.length) {
+                if (self.pathIndex == self.turn.path.length) {
                     // Done animating the player moving
-                    this.movePlayer = false
+                    self.movePlayer = false
                     // Ensure the player is drawn at the end position
-                    this.turn.startingPosition = this.turn.path[this.pathIndex - 1]
-                    this.pathIndex = 0
+                    self.turn.startingPosition = self.turn.path[self.pathIndex - 1]
+                    self.pathIndex = 0
+                    self.playerAnimPos = undefined
 
-                    this.endTurnButton.elt.disabled = false
+                    self.endTurnButton.elt.disabled = false
 
                     return
                 }
-                let sprite = this.players[this.game.current.id]
-                let nextPos = this.turn.path[this.pathIndex]
-                let coord = Canvas.squarePosition(nextPos, this.game.current.id)
 
-                sprite.animateTo(coord[0], coord[1])
+                if (self.playerAnimPos == undefined) {
+                    self.playerAnimPos = self.turn.startingPosition || 0
+                }
 
-                this.descriptions.showDescriptions(this.turn.path, this.pathIndex)
+                self.descriptions.showDescriptions(self.turn.path, self.pathIndex)
+                self.movePlayer = true;
 
-                this.pathIndex++
-                this.movePlayer = true;
+                let sprite = self.players[self.game.current.id]
+                let nextPos = self.turn.path[self.pathIndex]
+
+                if (self.playerAnimPos == nextPos) {
+                    // Finished with self path segment, move to the next
+                    self.pathIndex++
+                    sketch.nextPlayerPath()
+                } else {
+                    // Animate along the path segment
+                    let direction = self.playerAnimPos < nextPos ? 1 : -1
+                    self.playerAnimPos += direction
+                    let coord = Canvas.squarePosition(self.playerAnimPos, self.game.current.id)
+                    sprite.animateTo(coord[0], coord[1])
+                }
             }
 
             sketch.drawDice = () => {
-                if (this.dieRolling) {
-                    this.dieRolling = !this.dies[this.turn.diceValue - 1].roll(sketch)
-                    if (!this.dieRolling) {
+                if (self.dieRolling) {
+                    self.dieRolling = !self.dies[self.turn.diceValue - 1].roll(sketch)
+                    if (!self.dieRolling) {
                         // Start player moving animation
+                        self.pathIndex = 0
                         sketch.nextPlayerPath()
                     }
                 } else {
-                    if (this.turn != undefined) {
-                        this.dies[this.turn.diceValue - 1].show(sketch)
+                    if (self.turn != undefined) {
+                        self.dies[self.turn.diceValue - 1].show(sketch)
                     }
                 }
             }
 
             sketch.animatePlayer = () => {
-                let sprite = this.players[this.game.current.id]
+                let sprite = self.players[self.game.current.id]
                 if (sprite.animateMoving()) {
                     // Animation has ended, move to the next part of the path
                     sketch.nextPlayerPath()
@@ -337,7 +354,7 @@ export class Canvas implements GameUI {
 
                 sketch.drawDice()
                 sketch.drawPlayers()
-                if (!this.dieRolling) {
+                if (!self.dieRolling) {
                     sketch.drawInfos()
                 }
             }
@@ -351,10 +368,10 @@ export class Canvas implements GameUI {
 
 /*
  TODO: UI
- - Shop screen
  - Animatie van lopen gaat te snel
  - Status van gekochte items
  - Aantal spelers kiezen
+ - Meerdere dobbelstenen
 
  TODO: Game
  - Checken van alle speciale vakjes (bv 13)
