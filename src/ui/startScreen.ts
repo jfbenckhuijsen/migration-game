@@ -50,12 +50,6 @@ export class StartScreen {
             sketch.windowResized = ()  => {
                 sketch.resizeCanvas(sketch.windowWidth, sketch.windowHeight);
             }
-
-            sketch.draw = () => {
-                sketch.clear()
-
-                // TODO
-            }
         })
     }
 
