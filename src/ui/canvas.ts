@@ -372,18 +372,17 @@ export class Canvas {
 
 // TODO: <a href="https://www.freepik.com/free-vector/golden-silver-bronze-metallic-trophy-cup-set-isolated-vector-illustration_1158422.htm">Image by macrovector</a> on Freepik
 
-
 /*
  TODO: UI
  - Aantal spelers kiezen
  - Meerdere dobbelstenen
 
  TODO: Game
- - Checken van alle speciale vakjes (bv 13)
  - Kopen van items en werking binnen het spel
+ - Visa vakje
+ - Checken van alle speciale vakjes (bv 13 en finish)
  - Van het finish vakje afhalen na landen
  - Playtesting
  - Undefined error at board.ts:78 at end of game
-
- - Op internet zetten --> https://html-preview.github.io/?url=https://github.com/jfbenckhuijsen/migration-game/blob/main/dist/index.html
+ - Random speler als eerste speler
  */
