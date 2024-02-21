@@ -387,10 +387,3 @@ export class Canvas {
 }
 
 // TODO: <a href="https://www.freepik.com/free-vector/golden-silver-bronze-metallic-trophy-cup-set-isolated-vector-illustration_1158422.htm">Image by macrovector</a> on Freepik
-
-/*
- TODO: UI
- - If you have already bought an item, you cannot buy it again in the same turn
- - Playtesting
- - Undefined error at board.ts:78 at end of game
- */
