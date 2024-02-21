@@ -11,6 +11,7 @@ export class WinnerScreen {
     second: p5.Element
     third: p5.Element
 
+    playerLabels : Array<p5.Element> = new Array<p5.Element>()
     elems: Array<p5.Element> = new Array<p5.Element>()
 
     constructor(game: Game) {
@@ -20,20 +21,18 @@ export class WinnerScreen {
     setup(sketch: p5) {
         this.cups = sketch.createImg(cups, "")
             .position(160, 30)
-        this.first = sketch.createDiv("1111111111111")
+        this.playerLabels.push(sketch.createDiv("")
             .addClass("first")
-            .position(960 / 2 + 120, 458)
-        this.second = sketch.createDiv("2222222222222")
+            .position(960 / 2 + 120, 458))
+        this.playerLabels.push(sketch.createDiv("")
             .addClass("second")
-            .position(280, 463)
-        this.third = sketch.createDiv("33333333333333")
+            .position(280, 463))
+        this.playerLabels.push(sketch.createDiv("")
             .addClass("third")
-            .position(930, 463)
+            .position(930, 463))
 
         this.elems.push(this.cups)
-        this.elems.push(this.first)
-        this.elems.push(this.second)
-        this.elems.push(this.third)
+        this.elems.push(...this.playerLabels)
 
         this.elems.forEach(e => e.addClass("winnerScreen"))
         this.hide()
@@ -42,9 +41,9 @@ export class WinnerScreen {
     show() {
         let winners = this.game.winners()
 
-        this.showWinner(this.first, winners[0])
-        this.showWinner(this.second, winners[1])
-        this.showWinner(this.third, winners[2])
+        for (let i = 0; i < winners.length; i++) {
+            this.showWinner(this.playerLabels[i], winners[i])
+        }
 
         this.elems.forEach(e => e.removeClass("hidden"))
     }
