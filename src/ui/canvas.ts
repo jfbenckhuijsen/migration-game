@@ -12,6 +12,8 @@ import {WinnerScreen} from "./winnerScreen";
 import {ShopScreen} from "./shopScreen";
 import {Shop} from "../game/shop";
 
+import diceRolling from '../ui/dice-roll.mp3';
+
 export class Canvas {
 
     static VERSION = "0.0.1"
@@ -102,6 +104,7 @@ export class Canvas {
     private winnerScreen: WinnerScreen
     private rollButton: p5.Element
     private endTurnButton: p5.Element
+    private soundRollingDice: p5.MediaElement
 
     // Animation state
     private dieRolling : boolean = false
@@ -202,6 +205,9 @@ export class Canvas {
                 sketch.createDiv(`Version ${Canvas.VERSION}`)
                     .position(1150, 690)
                     .addClass("version")
+
+                self.soundRollingDice = sketch.createAudio(diceRolling)
+                    .noLoop()
             }
 
             sketch.windowResized = ()  => {
@@ -209,6 +215,7 @@ export class Canvas {
             }
 
             sketch.rollDice = () => {
+                self.soundRollingDice.play()
                 self.pathIndex = 0
                 self.turn = self.game.takeTurn()
 
