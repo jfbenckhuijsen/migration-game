@@ -17,7 +17,7 @@ describe('Board', () => {
         let player = new Player()
 
         expect(board.squares[10].player).toBeUndefined()
-        var newPos = board.movePlayer(player, 10)
+        let newPos = board.movePlayer(player, 10)
         expect(newPos).toBe(10)
         expect(board.squares[10].player).toBe(player)
     })
@@ -28,7 +28,7 @@ describe('Board', () => {
 
         board.movePlayer(player, 1)
         expect(board.squares[1].player).toBe(player)
-        var newPos = board.movePlayer(player, 2)
+        let newPos = board.movePlayer(player, 2)
         expect(newPos).toBe(3)
         expect(board.squares[1].player).toBeUndefined()
         expect(board.squares[3].player).toBe(player)
