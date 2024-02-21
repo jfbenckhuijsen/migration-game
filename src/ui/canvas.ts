@@ -108,6 +108,10 @@ export class Canvas {
     private playerAnimPos: number = undefined
 
     constructor(numberOfPlayers: number) {
+        if (numberOfPlayers < 2 || numberOfPlayers > Canvas.MAX_NUMBER_OF_PLAYERS) {
+            throw new Error("Invalid number of players")
+        }
+
         this.game = new Game(numberOfPlayers)
         this.setup()
     }
@@ -129,6 +133,7 @@ export class Canvas {
     }
 
     private setup(): void {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         let self = this
 
         self.myp5 = new p5((sketch) => {
