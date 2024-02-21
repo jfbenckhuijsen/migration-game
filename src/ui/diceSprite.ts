@@ -32,7 +32,7 @@ export class DiceSprite {
     }
 
     private getSpriteFrame(col : number, row: number): Image {
-        var img = DiceSprite.spritesheet
+        let img = DiceSprite.spritesheet
             .get(col * 16, row * 16, 16, 16)
         img.resize(32, 32)
         return img

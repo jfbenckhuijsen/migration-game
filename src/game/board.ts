@@ -14,7 +14,7 @@ export class Board {
     constructor() {
         this.squares = new Array<Square>()
         for (let i = 0; i < 62; i++) {
-            var square = new NormalSquare(i)
+            let square = new NormalSquare(i)
             this.squares.push(square)
         }
         this.squares.push(new Finish(63, "You arrived in Ter Apel!"))
@@ -60,16 +60,16 @@ export class Board {
      * @param path The steps the player already has taken
      */
     movePlayer(player: Player, steps: number, path: Array<number>) {
-        var pos: number = this.playerPosition(player)
+        let pos: number = this.playerPosition(player)
         if(pos == undefined) {
             pos = 0
         }
-        var newPos = pos + steps
-        var direction = (steps >= 0) ? 1 : -1
+        let newPos = pos + steps
+        let direction = (steps >= 0) ? 1 : -1
 
         // PLayer moved beyond the finish line
         if (newPos >= this.squares.length) {
-            var stepsBack = newPos - this.squares.length
+            let stepsBack = newPos - this.squares.length
             newPos = this.squares.length - stepsBack
             direction = -1
         }
@@ -80,7 +80,7 @@ export class Board {
         }
 
         // Move the plauer
-        var oldSquare = this.squares [pos]
+        let oldSquare = this.squares [pos]
         oldSquare.leave()
 
         if (newPos < 0) {
@@ -89,7 +89,7 @@ export class Board {
         path.push(newPos)
 
         if (newPos > 0) {
-            var square = this.squares[newPos]
+            let square = this.squares[newPos]
             square.occupy(player, this, path)
         }
     }
@@ -100,7 +100,7 @@ export class Board {
      */
     playerPosition(player: Player): number | undefined {
         for (let i = 0; i < this.squares.length; i++) {
-            var square = this.squares[i]
+            let square = this.squares[i]
             if (square.isOccupiedBy(player)) {
                 return square.place
             }

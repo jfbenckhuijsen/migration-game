@@ -23,12 +23,12 @@ export class Player {
      * @return De informatie over deze gooi-beurt
      */
     takeTurn(board: Board) : Turn {
-        var dice = new Dice()
-        var steps = dice.roll()
+        let dice = new Dice()
+        let steps = dice.roll()
         this.money += steps * Player.MONEY_PER_STEP
 
-        var oldPos = board.playerPosition(this)
-        var path = new Array<number>()
+        let oldPos = board.playerPosition(this)
+        let path = new Array<number>()
         board.movePlayer(this, steps, path)
         return new Turn(steps, oldPos, path)
     }

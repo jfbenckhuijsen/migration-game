@@ -8,9 +8,9 @@ export class Dice {
     }
 
     rollDices(times: number) : number {
-        var total = 0
+        let total = 0
         for (let i = 0; i < times; i++) {
-            var v = this.roll()
+            let v = this.roll()
             total = total + v
         }
         return total

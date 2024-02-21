@@ -12,7 +12,7 @@ export class Game {
         this.board = new Board()
 
         for (let i = 0; i < numberOfPlayers; i++) {
-            var player = new Player(i)
+            let player = new Player(i)
             this.players.push(player)
         }
 
@@ -42,7 +42,7 @@ export class Game {
             this.winnerList.push(this.current)
         }
 
-        var currentIndex = this.players.indexOf(this.current)
+        let currentIndex = this.players.indexOf(this.current)
         currentIndex = (currentIndex + 1) % this.players.length
 
         while (!this.players[currentIndex].canPlayTurn()) {
