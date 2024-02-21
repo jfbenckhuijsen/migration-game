@@ -91,9 +91,9 @@ export class Board {
         let direction = (steps >= 0) ? 1 : -1
 
         // PLayer moved beyond the finish line
-        if (newPos >= this.squares.length) {
+        if (newPos >= this.squares.length - 1) {
             let stepsBack = newPos - this.squares.length + 1
-            newPos = this.squares.length - stepsBack
+            newPos = this.squares.length - 1 - stepsBack
             direction = -1
 
             path.push(this.squares.length - 1)
