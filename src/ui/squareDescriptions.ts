@@ -23,10 +23,10 @@ export class SquareDescriptions {
 
     }
 
-    showDescriptions(path: Array<number>, index: number) {
+    showDescriptions(start : number, path: Array<number>, index: number) {
         let descriptions = this.game.squareDescriptionForPath(path)
 
-        this.div.elt.innerHTML = descriptions
+        this.div.elt.innerHTML = this.path([start, ...path]) + descriptions
             .map((d, i) => this.decorate(d, path[i], i == index))
             .join("")
         this.div.removeClass('hidden')
@@ -34,6 +34,12 @@ export class SquareDescriptions {
 
     hide() {
         this.div.addClass('hidden')
+    }
+
+    private path(path: Array<number>) {
+        return "<p class='descriptionRow'>"
+            + path.map(p => p == undefined ? "Start" : `${p}`).join(" -&gt; ")
+            + "</p>"
     }
 
     private decorate(description: string, square: number, current: boolean) {

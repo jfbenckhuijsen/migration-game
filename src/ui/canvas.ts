@@ -184,7 +184,7 @@ export class Canvas {
 
                 sketch.showShopForPlayer()
 
-                self.descriptions = new SquareDescriptions(self.game, 0, 400)
+                self.descriptions = new SquareDescriptions(self.game, 0, 200)
                 self.descriptions.setup(sketch)
 
                 self.rollButton = sketch.createButton("Roll")
@@ -321,7 +321,7 @@ export class Canvas {
                     self.playerAnimPos = self.turn.startingPosition || 0
                 }
 
-                self.descriptions.showDescriptions(self.turn.path, self.pathIndex)
+                self.descriptions.showDescriptions(self.turn.startingPosition, self.turn.path, self.pathIndex)
                 self.movePlayer = true;
 
                 let sprite = self.players[self.game.current.id]
