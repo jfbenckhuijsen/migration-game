@@ -100,7 +100,7 @@ export class ShopScreen {
 
         this.targetSelector = sketch.createSelect() as Select
         this.game.otherPlayers(this.player).forEach(player => {
-            this.targetSelector.option(`Player ${player.id}`, player.id)
+            this.targetSelector.option(`Player ${player.id}`, `${player.id}`)
         })
         this.targetSelector.position(x, y + 100)
 
@@ -164,7 +164,7 @@ export class ShopScreen {
 
 interface Select extends p5.Element {
 
-    option(name: string, value: any): void
+    option(name: string, value: string): void
 
     value(): any
 }
