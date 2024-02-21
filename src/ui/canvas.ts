@@ -314,6 +314,8 @@ export class Canvas {
 
                     self.endTurnButton.elt.disabled = false
 
+                    sketch.showShopForPlayer()
+
                     return
                 }
 
@@ -391,7 +393,4 @@ export class Canvas {
  - If you have already bought an item, you cannot buy it again in the same turn
  - Playtesting
  - Undefined error at board.ts:78 at end of game
-
- TODO: Game
- - Random speler als eerste speler
  */
