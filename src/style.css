@@ -18,6 +18,10 @@ body {
     z-index: -1;
 }
 
+.version {
+    color: lightgray;
+}
+
 .playerInfo {
 }
 

@@ -14,6 +14,7 @@ import {Shop} from "../game/shop";
 
 export class Canvas implements GameUI {
 
+    static VERSION = "0.0.1"
     static NUMBER_OF_PLAYERS = Object.keys(PlayerColor).length / 2
     static MAP_SCALE = 1280.0 / 1820.0
     static SQUARE_LOCATIONS : Array<Array<number>> = [
@@ -190,6 +191,10 @@ export class Canvas implements GameUI {
 
                 self.winnerScreen = new WinnerScreen(self.game)
                 self.winnerScreen.setup(sketch)
+
+                sketch.createDiv(`Version ${Canvas.VERSION}`)
+                    .position(1150, 690)
+                    .addClass("version")
             }
 
             sketch.windowResized = ()  => {
