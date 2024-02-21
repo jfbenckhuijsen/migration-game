@@ -15,6 +15,7 @@ import {Shop} from "../game/shop";
 export class Canvas {
 
     static VERSION = "0.0.1"
+    static MIN_NUMBER_OF_PLAYERS = 2
     static MAX_NUMBER_OF_PLAYERS = Object.keys(PlayerColor).length / 2
     static MAX_NUMBER_OF_DICE = 3
     static MAP_SCALE = 1280.0 / 1820.0
@@ -109,7 +110,7 @@ export class Canvas {
     private playerAnimPos: number = undefined
 
     constructor(numberOfPlayers: number) {
-        if (numberOfPlayers < 2 || numberOfPlayers > Canvas.MAX_NUMBER_OF_PLAYERS) {
+        if (numberOfPlayers < Canvas.MIN_NUMBER_OF_PLAYERS || numberOfPlayers > Canvas.MAX_NUMBER_OF_PLAYERS) {
             throw new Error("Invalid number of players")
         }
 
@@ -152,8 +153,7 @@ export class Canvas {
                 sketch.createCanvas(sketch.windowWidth, sketch.windowHeight)
                 sketch.rectMode(sketch.CENTER).noFill().frameRate(30);
 
-                let mapImg = sketch.createImg(gamemap).position(0, 0)
-                mapImg.elt.className = 'gamemap'
+                sketch.createImg(gamemap).position(0, 0).addClass("gamemap")
 
                 for (let d = 0; d < Canvas.MAX_NUMBER_OF_DICE; d++) {
                     let dies = new Array<DiceSprite>()
@@ -387,10 +387,6 @@ export class Canvas {
 // TODO: <a href="https://www.freepik.com/free-vector/golden-silver-bronze-metallic-trophy-cup-set-isolated-vector-illustration_1158422.htm">Image by macrovector</a> on Freepik
 
 /*
- TODO: UI
- - Aantal spelers kiezen
- - Meerdere dobbelstenen
-
  TODO: Game
  - Kopen van items en werking binnen het spel
  - Visa vakje

@@ -18,6 +18,19 @@ body {
     z-index: -1;
 }
 
+.mapoverlay {
+    width: 960px;
+    height: 678px;
+
+    background-color: rgb(0, 0, 0, 0.8);
+}
+
+.howManyPlayers {
+    color: white;
+    width: 960px;
+    text-align: center;
+}
+
 .version {
     color: lightgray;
 }

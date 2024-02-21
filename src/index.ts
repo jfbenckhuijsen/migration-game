@@ -1,4 +1,4 @@
 // GLOBAL VARS & TYPES
-import {Canvas} from './ui/canvas';
+import {StartScreen} from "./ui/startScreen";
 
-let canvas = new Canvas(4)
+new StartScreen()
