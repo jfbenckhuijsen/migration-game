@@ -81,7 +81,7 @@ export class Board {
                 }
             }
         } else {
-            path.push(newPos)
+            path.push(pos)
         }
 
     }
