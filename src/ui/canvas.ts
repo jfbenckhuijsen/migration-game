@@ -368,16 +368,15 @@ export class Canvas implements GameUI {
 
 /*
  TODO: UI
- - Animatie van lopen gaat te snel
- - Status van gekochte items
  - Aantal spelers kiezen
  - Meerdere dobbelstenen
 
  TODO: Game
  - Checken van alle speciale vakjes (bv 13)
  - Kopen van items en werking binnen het spel
- - Op internet zetten
  - Van het finish vakje afhalen na landen
  - Playtesting
  - Undefined error at board.ts:78 at end of game
+
+ - Op internet zetten --> https://html-preview.github.io/?url=https://github.com/jfbenckhuijsen/migration-game/blob/main/dist/index.html
  */
