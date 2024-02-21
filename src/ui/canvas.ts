@@ -387,12 +387,11 @@ export class Canvas {
 // TODO: <a href="https://www.freepik.com/free-vector/golden-silver-bronze-metallic-trophy-cup-set-isolated-vector-illustration_1158422.htm">Image by macrovector</a> on Freepik
 
 /*
- TODO: Game
- - Kopen van items en werking binnen het spel
- - Visa vakje
- - Checken van alle speciale vakjes (bv 13 en finish)
- - Van het finish vakje afhalen na landen
+ TODO: UI
+ - If you have already bought an item, you cannot buy it again in the same turn
  - Playtesting
  - Undefined error at board.ts:78 at end of game
+
+ TODO: Game
  - Random speler als eerste speler
  */
