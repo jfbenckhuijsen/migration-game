@@ -13,7 +13,7 @@ export class Board {
 
     constructor() {
         this.squares = new Array<Square>()
-        for (let i = 0; i < 62; i++) {
+        for (let i = 0; i < 63; i++) {
             let square = new NormalSquare(i)
             this.squares.push(square)
         }
@@ -27,7 +27,7 @@ export class Board {
         this.squares[18] = new GiftedMoneySquare(18, "A kind lady gifted you \u20AC 30")
         this.squares[22] = new VisaSquare(22, "The Romanian customs caught you trying to get into the country, you need a visa to move on (you can roll for money on your spot until you have the money to move on)", 1)
         this.squares[26] = new TaxiSquare(26, "You took a taxi to get to your destination but he went the wrong way go back to 24 and pay \u20AC 20")
-        this.squares[29] = new MovePlayerSquare(29, "You sneaked into a truck go to 34", 5)
+        this.squares[29] = new MovePlayerSquare(29, "You sneaked into a truck, go to 34", 5)
         this.squares[33] = new SkipTurnSquare(33, "You got hit by a car, skip one turn", 1)
         this.squares[36] = new VisaSquare(36, "You want to get into France but your passport is not strong enough, you need a visa to move on (you can roll for money on your spot until you have the money to move on)", 1)
         this.squares[39] = new RobberSquare(39, "When walking in paris a man robbed you, you managed to keep half your money but the other half was stolen")
@@ -74,6 +74,11 @@ export class Board {
             if (newPos > 0) {
                 let square = this.squares[newPos]
                 square.occupy(player, this, path)
+
+                if (player.winner) {
+                    // Player has won and is on the finish square
+                    square.leave()
+                }
             }
         } else {
             path.push(newPos)
