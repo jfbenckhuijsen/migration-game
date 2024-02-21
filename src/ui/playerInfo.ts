@@ -103,6 +103,26 @@ export class PlayerInfo {
         if (this.player.skipTurns > 0) {
             result += `&#9940; ${this.player.skipTurns}`
         }
+        if (this.player.visaCount() > 0) {
+            // Visa  🛂
+            result += `&#128706; ${this.player.visaCount()}`
+        }
+        if (this.player.doubleSpaces()) {
+            // Double steps 🏃
+            result += `&#127939;`
+        }
+        if (this.player.negativeSpaces()) {
+            // Negative steps ⏮️
+            result += `&#9194;`
+        }
+        if (this.player.hasExtraDice()) {
+            // Extra dice 🎲
+            result += `&#127922;`
+        }
+        if (this.player.hasDoubleMoney()) {
+            // Double money 💰
+            result += `&#128176;`
+        }
         return result
     }
 

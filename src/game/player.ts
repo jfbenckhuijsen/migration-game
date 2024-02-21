@@ -49,4 +49,38 @@ export class Player {
     hasMoney(): boolean {
         return this.money > 0
     }
+
+    visaCount(): number {
+        // TODO Ymre
+        return 0
+    }
+
+    doubleSpaces(): boolean {
+        // TODO: Ymre
+
+        return false
+
+    }
+
+    negativeSpaces(): boolean {
+        // TODO: Ymre
+
+        return false
+    }
+
+    hasExtraDice(): boolean {
+        // TODO: Ymre
+
+        return false
+
+    }
+
+    hasDoubleMoney(): boolean {
+        // TODO: Ymre
+
+        return false
+
+    }
+
+
 }
