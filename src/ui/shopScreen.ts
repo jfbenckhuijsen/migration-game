@@ -29,6 +29,7 @@ export class ShopScreen {
             callback: function (self: ShopScreen) {
                 self.shop.buyVisa(self.player)
             },
+            disableCallback: function() {return false},
             cost: Visa.COST,
             button: undefined
         },
@@ -36,6 +37,9 @@ export class ShopScreen {
             title: "Extra dice",
             callback: function( self: ShopScreen) {
                 self.shop.buyRollAnExtraDice(self.player)
+            },
+            disableCallback: function(player: Player) {
+                return player.hasExtraDice()
             },
             cost: RollAnExtraDice.COST,
             button: undefined
@@ -45,6 +49,9 @@ export class ShopScreen {
             callback: function( self: ShopScreen) {
                 self.shop.buyDoubleMoneyFor1Turn(self.player)
             },
+            disableCallback: function(player: Player) {
+                return player.hasDoubleMoney()
+            },
             cost: DoubleMoneyFor1Turn.COST,
             button: undefined
         },
@@ -52,6 +59,9 @@ export class ShopScreen {
             title: "Double roll",
             callback: function( self: ShopScreen) {
                 self.shop.buyNextRollIsDouble(self.player)
+            },
+            disableCallback: function(player: Player) {
+                return player.hasRollIsDouble()
             },
             cost: NextRollIsDouble.COST,
             button: undefined
@@ -64,6 +74,7 @@ export class ShopScreen {
             callback: function( self: ShopScreen) {
                 self.shop.buyStealMoney(self.player, self.selectedPlayer())
             },
+            disableCallback: function() {return false},
             cost: StealMoney.COST,
             button: undefined
         },
@@ -72,6 +83,7 @@ export class ShopScreen {
             callback: function( self: ShopScreen) {
                 self.shop.buyMakeSomeoneSkipATurn(self.player, self.selectedPlayer())
             },
+            disableCallback: function() {return false},
             cost: MakeSomeoneSkipATurn.COST,
             button: undefined
         },
@@ -80,6 +92,7 @@ export class ShopScreen {
             callback: function( self: ShopScreen) {
                 self.shop.buyRollForNegativeSpaces(self.player, self.selectedPlayer())
             },
+            disableCallback: function() {return false},
             cost: RollForNegativeSpaces.COST,
             button: undefined
         },
@@ -148,7 +161,7 @@ export class ShopScreen {
 
     private updateButtons(buttons: Array<Button>) {
         buttons.forEach(b => {
-            b.button.elt.disabled = this.player.money < b.cost;
+            b.button.elt.disabled = this.player.money < b.cost || b.disableCallback(this.player);
         })
     }
 
@@ -157,7 +170,7 @@ export class ShopScreen {
     }
 
     private selectedPlayer(): Player {
-        let playerId = this.targetSelector.value()
+        let playerId = this.targetSelector.value() as number
         return this.game.players[playerId]
     }
 }
@@ -166,12 +179,12 @@ interface Select extends p5.Element {
 
     option(name: string, value: string): void
 
-    value(): any
 }
 
 interface Button {
     title: string,
     callback: (self: ShopScreen) => void
+    disableCallback: (player: Player) => boolean
     cost: number
     button: p5.Element | undefined
 }
