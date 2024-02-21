@@ -1,6 +1,6 @@
 import '../style.css';
 import * as p5 from "p5";
-import {Game, GameUI} from "../game/game";
+import {Game} from "../game/game";
 import gamemap from "./game-map.png";
 import {Turn} from "../game/turn";
 import {DiceSprite} from "./diceSprite";
@@ -12,7 +12,7 @@ import {WinnerScreen} from "./winnerScreen";
 import {ShopScreen} from "./shopScreen";
 import {Shop} from "../game/shop";
 
-export class Canvas implements GameUI {
+export class Canvas {
 
     static VERSION = "0.0.1"
     static NUMBER_OF_PLAYERS = Object.keys(PlayerColor).length / 2
@@ -87,7 +87,7 @@ export class Canvas implements GameUI {
     private myp5: p5
 
     // Game data
-    private game = new Game(this, Canvas.NUMBER_OF_PLAYERS)
+    private game = new Game(Canvas.NUMBER_OF_PLAYERS)
     private shop = new Shop()
     private turn: Turn
 
@@ -109,10 +109,6 @@ export class Canvas implements GameUI {
 
     constructor() {
         this.setup()
-    }
-
-    draw(): void {
-
     }
 
     private static squarePosition(pos: number, index: number): Array<number> {

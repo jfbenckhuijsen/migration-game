@@ -2,22 +2,13 @@ import {Player} from './player';
 import {Turn} from "./turn";
 import {Board} from "./board";
 
-export interface GameUI {
-
-    draw(): void
-
-}
-
 export class Game {
-    private gameUI: GameUI;
     board: Board
     players: Array<Player> = new Array<Player>()
     winnerList: Array<Player> = new Array<Player>()
     current: Player
 
-    constructor(gameUI: GameUI, numberOfPlayers: number) {
-        this.gameUI = gameUI;
-
+    constructor(numberOfPlayers: number) {
         this.board = new Board()
 
         for (let i = 0; i < numberOfPlayers; i++) {
