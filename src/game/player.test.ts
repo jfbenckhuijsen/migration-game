@@ -9,8 +9,8 @@ describe('Players', () => {
 
         let turn = player.takeTurn(board)
 
-        expect(turn.diceValue).toBeGreaterThan(0)
-        expect(board.playerPosition(player)).toBe(turn.diceValue)
+        expect(turn.diceValues[0]).toBeGreaterThan(0)
+        expect(board.playerPosition(player)).toBe(turn.diceValues[0])
     })
 
     test('take second turn', () => {
@@ -19,9 +19,9 @@ describe('Players', () => {
 
         let turn = player.takeTurn(board)
 
-        expect(board.playerPosition(player)).toBe(turn.diceValue)
+        expect(board.playerPosition(player)).toBe(turn.diceValues[0])
 
         let turn2 = player.takeTurn(board)
-        expect(board.playerPosition(player)).toBe(turn.diceValue + turn2.diceValue)
+        expect(board.playerPosition(player)).toBe(turn.diceValues[0] + turn2.diceValues[0])
     })
 })

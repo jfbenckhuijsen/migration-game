@@ -39,6 +39,10 @@ export class DiceSprite {
     }
 
     roll(p5: p5): boolean {
+        if (this.sprite.ended()) {
+            return true
+        }
+
         this.sprite.y = this.y - 20 * Math.sin(Math.PI * this.frame / this.totalFrames)
         this.frame++
 

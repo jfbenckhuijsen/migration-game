@@ -16,6 +16,7 @@ export class Canvas {
 
     static VERSION = "0.0.1"
     static MAX_NUMBER_OF_PLAYERS = Object.keys(PlayerColor).length / 2
+    static MAX_NUMBER_OF_DICE = 3
     static MAP_SCALE = 1280.0 / 1820.0
     static SQUARE_LOCATIONS : Array<Array<number>> = [
         [0, 1635, 940  ],
@@ -92,7 +93,7 @@ export class Canvas {
     private turn: Turn
 
     // UI Elements
-    private dies: Array<DiceSprite> = new Array<DiceSprite>()
+    private dies: Array<Array<DiceSprite>> = new Array<Array<DiceSprite>>()
     private players: Array<PlayerSprite> = new Array<PlayerSprite>()
     private playerInfo: Array<PlayerInfo> = new Array<PlayerInfo>()
     private shopScreens: Array<ShopScreen> = new Array<ShopScreen>()
@@ -154,8 +155,12 @@ export class Canvas {
                 let mapImg = sketch.createImg(gamemap).position(0, 0)
                 mapImg.elt.className = 'gamemap'
 
-                for (let i = 0; i < 6; i++) {
-                    self.dies.push(new DiceSprite(i + 1, 10, 40))
+                for (let d = 0; d < Canvas.MAX_NUMBER_OF_DICE; d++) {
+                    let dies = new Array<DiceSprite>()
+                    for (let i = 0; i < 6; i++) {
+                        dies.push(new DiceSprite(i + 1, 10 + d * 40, 40))
+                    }
+                    self.dies.push(dies)
                 }
 
                 for (let i = 0; i < this.game.numberOfPlayers(); i++) {
@@ -207,7 +212,9 @@ export class Canvas {
                 self.pathIndex = 0
                 self.turn = self.game.takeTurn()
 
-                self.dies[self.turn.diceValue - 1].reset()
+                self.turn.diceValues.forEach((value, index) => {
+                    self.dies[index][value - 1].reset()
+                })
                 self.dieRolling = true
                 self.movePlayer = false
                 self.rollButton.elt.disabled = true
@@ -335,7 +342,12 @@ export class Canvas {
 
             sketch.drawDice = () => {
                 if (self.dieRolling) {
-                    self.dieRolling = !self.dies[self.turn.diceValue - 1].roll(sketch)
+                    self.dieRolling = !self.turn.diceValues
+                        .map((value, index) => {
+                            return self.dies[index][value - 1].roll(sketch)
+                        }).reduce((a,b) =>
+                            a && b, true
+                        )
                     if (!self.dieRolling) {
                         // Start player moving animation
                         self.pathIndex = 0
@@ -343,7 +355,9 @@ export class Canvas {
                     }
                 } else {
                     if (self.turn != undefined) {
-                        self.dies[self.turn.diceValue - 1].show(sketch)
+                        self.turn.diceValues.forEach((value, index) => {
+                            self.dies[index][value - 1].show(sketch)
+                        })
                     }
                 }
             }

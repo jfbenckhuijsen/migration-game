@@ -39,7 +39,7 @@ export class Player {
         this.doubleMoney = 1
         this.rollDouble = 1
 
-        return new Turn(steps, oldPos, path)
+        return new Turn([steps], oldPos, path)
     }
 
     canPlayTurn(): boolean {
