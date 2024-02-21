@@ -16,10 +16,8 @@ export class Game {
             this.players.push(player)
         }
 
-        this.current = this.players[0]
-
-
-        // TODO: laat een random speler de eerste speler zijn
+        let firstPlayer =  Math.floor(Math.random() * numberOfPlayers)
+        this.current = this.players[firstPlayer]
     }
 
     /**
