@@ -15,7 +15,7 @@ import {Shop} from "../game/shop";
 export class Canvas {
 
     static VERSION = "0.0.1"
-    static NUMBER_OF_PLAYERS = Object.keys(PlayerColor).length / 2
+    static MAX_NUMBER_OF_PLAYERS = Object.keys(PlayerColor).length / 2
     static MAP_SCALE = 1280.0 / 1820.0
     static SQUARE_LOCATIONS : Array<Array<number>> = [
         [0, 1635, 940  ],
@@ -87,7 +87,7 @@ export class Canvas {
     private myp5: p5
 
     // Game data
-    private game = new Game(Canvas.NUMBER_OF_PLAYERS)
+    private game: Game
     private shop = new Shop()
     private turn: Turn
 
@@ -107,7 +107,8 @@ export class Canvas {
     private pathIndex: number = 0
     private playerAnimPos: number = undefined
 
-    constructor() {
+    constructor(numberOfPlayers: number) {
+        this.game = new Game(numberOfPlayers)
         this.setup()
     }
 
@@ -152,7 +153,7 @@ export class Canvas {
                     self.dies.push(new DiceSprite(i + 1, 10, 40))
                 }
 
-                for (let i = 0; i < Canvas.NUMBER_OF_PLAYERS; i++) {
+                for (let i = 0; i < this.game.numberOfPlayers(); i++) {
                     let coord = Canvas.squarePosition(0, i)
                     self.players.push(new PlayerSprite(i, coord[0], coord[1]))
 
@@ -165,7 +166,7 @@ export class Canvas {
                     self.playerInfo.push(info)
                 }
 
-                for (let i = 0; i < Canvas.NUMBER_OF_PLAYERS; i++) {
+                for (let i = 0; i < this.game.numberOfPlayers(); i++) {
                     let screen = new ShopScreen(self.game.players[i], self.game, self.shop)
                     screen.setup(sketch, 1150, 420)
                     self.shopScreens.push(screen)

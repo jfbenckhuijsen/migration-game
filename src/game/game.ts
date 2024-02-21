@@ -23,6 +23,13 @@ export class Game {
     }
 
     /**
+     * Returns the number of players for this game.
+     */
+    numberOfPlayers(): number {
+        return this.players.length
+    }
+
+    /**
      * Laat de huidige speler een beurt nemen.
      * @return De informatie over de Turn
      */
