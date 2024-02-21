@@ -107,11 +107,11 @@ export class PlayerInfo {
             // Visa  🛂
             result += `&#128706; ${this.player.visaCount()}`
         }
-        if (this.player.doubleSpaces()) {
+        if (this.player.hasRollIsDouble()) {
             // Double steps 🏃
             result += `&#127939;`
         }
-        if (this.player.negativeSpaces()) {
+        if (this.player.hasNegativeSpaces()) {
             // Negative steps ⏮️
             result += `&#9194;`
         }

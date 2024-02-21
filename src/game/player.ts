@@ -14,6 +14,7 @@ export class Player {
     doubleMoney: number = 1
     rollDouble: number = 1
     visa: number = 0
+    amountDices: number = 2
 
     constructor(id: number) {
         this.id = id
@@ -27,9 +28,9 @@ export class Player {
      */
     takeTurn(board: Board) : Turn {
         let dice = new Dice()
-        let steps = dice.roll()
+        let totDices = dice.rollDices(this.amountDices)
 
-        // TODO: Multiple dice
+        let steps = totDices.reduce((a,b) => a + b, 0)
 
         this.money += steps * Player.MONEY_PER_STEP * this.doubleMoney
 
@@ -41,8 +42,9 @@ export class Player {
         // reset bought items
         this.doubleMoney = 1
         this.rollDouble = 1
+        this.amountDices = 2
 
-        return new Turn([steps], oldPos, path)
+        return new Turn(totDices, oldPos, path)
     }
 
     canPlayTurn(): boolean {
@@ -66,19 +68,16 @@ export class Player {
         return this.visa
     }
 
-    doubleSpaces(): boolean {
+    hasRollIsDouble(): boolean {
         return this.rollDouble == 2
     }
 
-    negativeSpaces(): boolean {
+    hasNegativeSpaces(): boolean {
         return this.rollDouble == -1
     }
 
     hasExtraDice(): boolean {
-        // TODO: Ymre
-
-        return false
-
+        return this.amountDices == 3
     }
 
     hasDoubleMoney(): boolean {

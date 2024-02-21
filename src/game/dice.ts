@@ -7,12 +7,11 @@ export class Dice {
         return Math.floor(Math.random() * 6) + 1
     }
 
-    rollDices(times: number) : number {
-        let total = 0
+    rollDices(times: number) : Array<number> {
+        let totDices = new Array<number>()
         for (let i = 0; i < times; i++) {
-            let v = this.roll()
-            total = total + v
+            totDices.push(this.roll())
         }
-        return total
+        return totDices
     }
 }

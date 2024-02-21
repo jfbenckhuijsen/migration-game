@@ -70,6 +70,7 @@ export class RollAnExtraDice extends Items {
     }
 
     doBuy(): void {
+        this.owner.amountDices += 1
     }
 
 }

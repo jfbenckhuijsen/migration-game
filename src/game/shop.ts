@@ -8,16 +8,22 @@ export class Shop {
         item.buy()
     }
     buyRollAnExtraDice(player: Player) {
-        let item = new RollAnExtraDice(player)
-        item.buy()
+        if (!player.hasExtraDice()) {
+            let item = new RollAnExtraDice(player)
+            item.buy()
+        }
     }
     buyDoubleMoneyFor1Turn(player: Player) {
-        let item = new DoubleMoneyFor1Turn(player)
-        item.buy()
+        if (!player.hasDoubleMoney()) {
+            let item = new DoubleMoneyFor1Turn(player)
+            item.buy()
+        }
     }
     buyNextRollIsDouble(player: Player) {
-        let item = new NextRollIsDouble(player)
-        item.buy()
+        if (!player.hasRollIsDouble()) {
+            let item = new NextRollIsDouble(player)
+            item.buy()
+        }
     }
     buyStealMoney(player: Player, target: Player) {
         let item = new StealMoney(player, target)
