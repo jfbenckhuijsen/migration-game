@@ -14,7 +14,7 @@ describe('Board', () => {
 
     test("moving a player which is not yet on the board, places the player on the board", () => {
         let board = new Board()
-        let player = new Player()
+        let player = new Player(0)
 
         expect(board.squares[10].player).toBeUndefined()
         let newPos = board.movePlayer(player, 10)
@@ -24,7 +24,7 @@ describe('Board', () => {
 
     test("moving a player to an empty square", () => {
         let board = new Board()
-        let player = new Player()
+        let player = new Player(0)
 
         board.movePlayer(player, 1)
         expect(board.squares[1].player).toBe(player)
@@ -36,8 +36,8 @@ describe('Board', () => {
 
     test("moving a player to an occupied square", () => {
         let board = new Board()
-        let player1 = new Player()
-        let player2 = new Player()
+        let player1 = new Player(0)
+        let player2 = new Player(1)
 
         board.movePlayer(player1, 3)
         expect(board.squares[3].player).toBe(player1)
@@ -48,7 +48,7 @@ describe('Board', () => {
 
     test("moving a player further than the finish square", () => {
         let board = new Board()
-        let player = new Player()
+        let player = new Player(0)
 
         board.movePlayer(player, board.squares.length + 2)
         expect(board.squares[board.squares.length - 2].player).toBe(player)

@@ -5,7 +5,7 @@ import {Board} from './board';
 
 describe('Squares', () => {
 
-    test('square is occuped', () => {
+    test('square is occupied', () => {
         let square = new NormalSquare(1)
 
     })
@@ -16,7 +16,7 @@ describe('Squares', () => {
         expect(square.place).toBe(1)
         expect(square.player).toBeUndefined()
 
-        let player = new Player()
+        let player = new Player(1)
         let board = new Board()
         square.occupy(player, board)
 
@@ -25,12 +25,12 @@ describe('Squares', () => {
     })
 
     test("finish square marks the player as a winner", () => {
-        let square = new Finish(1)
+        let square = new Finish(1, "")
 
         expect(square.place).toBe(1)
         expect(square.player).toBeUndefined()
 
-        let player = new Player()
+        let player = new Player(1)
         let board = new Board()
         square.occupy(player, board)
 

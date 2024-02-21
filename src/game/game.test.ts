@@ -3,7 +3,7 @@ import {Game} from './game';
 
 describe('Game', () => {
     test('Create a new game', () => {
-        let game = new Game(undefined, 4)
+        let game = new Game(4)
         // TODO: Jeroen
     })
 
