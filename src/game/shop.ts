@@ -1,4 +1,4 @@
-import {Items, RollAnExtraDice} from "./items";
+import {DoubleMoneyFor1Turn, MakeSomeoneSkipATurn, NextRollIsDouble, RollAnExtraDice, StealMoney} from "./items";
 import {Player} from "./player";
 
 export class Shop {
@@ -12,18 +12,23 @@ export class Shop {
         item.buy()
     }
     buyDoubleMoneyFor1Turn(player: Player) {
-
+        let item = new DoubleMoneyFor1Turn(player)
+        item.buy()
     }
     buyNextRollIsDouble(player: Player) {
-
+        let item = new NextRollIsDouble(player)
+        item.buy()
     }
     buyStealMoney(player: Player, target: Player) {
-
+        let item = new StealMoney(player, target)
+        item.buy()
     }
     buyMakeSomeoneSkipATurn(player: Player, target: Player) {
-
+        let item = new MakeSomeoneSkipATurn(player, target)
+        item.buy()
     }
     buyRollForNegativeSpaces(player: Player, target: Player) {
-
+        let item = new MakeSomeoneSkipATurn(player, target)
+        item.buy()
     }
 }

@@ -25,6 +25,7 @@ export class Visa extends Items {
     }
 
     doBuy(): void {
+        this.owner.visa += 1
     }
 
 }

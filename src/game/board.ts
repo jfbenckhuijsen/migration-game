@@ -19,19 +19,19 @@ export class Board {
         }
         this.squares.push(new Finish(63, "You arrived in Ter Apel!"))
 
-        this.squares[2] = new SkipTurnSquare(2, "You hav to cross a river skip a turn", 1)
+        this.squares[2] = new SkipTurnSquare(2, "You have to cross a river, skip a turn", 1)
         this.squares[7] = new MovePlayerSquare(7, "A friend has a boat you can use, go to 10", 3)
         this.squares[11] = new BorderPatrolSquare(11, "The Turkish border patrol caught you trying to climb over a fence pay a \u20AC 40")
         this.squares[13] = new MovePlayerSquare(13, "You tried to climb a mountain but fell down, go back to 10", -3)
-        this.squares[14] = new MovePlayerSquare(14, "You succesfully climbed the mountain but fell and rolled down go to 17", 3)
+        this.squares[14] = new MovePlayerSquare(14, "You successfully climbed the mountain but fell and rolled down go to 17", 3)
         this.squares[18] = new GiftedMoneySquare(18, "A kind lady gifted you \u20AC 30")
-        this.squares[22] = new VisaSquare(22, "The Romanian customs caught you trying to get into the country, you need a visa to move on (you can roll for money on your spot until you have the money to move on)")
+        this.squares[22] = new VisaSquare(22, "The Romanian customs caught you trying to get into the country, you need a visa to move on (you can roll for money on your spot until you have the money to move on)", 1)
         this.squares[26] = new TaxiSquare(26, "You took a taxi to get to your destination but he went the wrong way go back to 24 and pay \u20AC 20")
         this.squares[29] = new MovePlayerSquare(29, "You sneaked into a truck go to 34", 5)
         this.squares[33] = new SkipTurnSquare(33, "You got hit by a car, skip one turn", 1)
-        this.squares[36] = new VisaSquare(36, "You want to get into France but your pasport is not strong enough, you need a visa to move on (you can roll for money on your spot until you have the money to move on)")
+        this.squares[36] = new VisaSquare(36, "You want to get into France but your passport is not strong enough, you need a visa to move on (you can roll for money on your spot until you have the money to move on)", 1)
         this.squares[39] = new RobberSquare(39, "When walking in paris a man robbed you, you managed to keep half your money but the other half was stolen")
-        this.squares[41] = new VisaSquare(41, "The German customs caught you trying to sneak into Germany you need 2 visa's to move on (you can roll for money on your spot until you have the money to move on)")
+        this.squares[41] = new VisaSquare(41, "The German customs caught you trying to sneak into Germany you need 2 visa's to move on (you can roll for money on your spot until you have the money to move on)", 2)
         this.squares[45] = new SkipTurnSquare(45, "The police caught you trying to pickpocket someone, you go to jail skip 2 turns", 2)
         this.squares[48] = new MovePlayerSquare(48, "A trucker helped you to cross the border go to 51", 3)
         this.squares[53] = new WetClothesSquare(53, "When crossing a river you fell in, now you have to buy new clothes pay \u20AC 40")
@@ -64,6 +64,24 @@ export class Board {
         if(pos == undefined) {
             pos = 0
         }
+        let newPos = this.calculateNewPosition(pos, steps, path);
+
+        // Move the player
+        let oldSquare = this.squares [pos]
+        if (oldSquare.leave()) {
+            path.push(newPos)
+
+            if (newPos > 0) {
+                let square = this.squares[newPos]
+                square.occupy(player, this, path)
+            }
+        } else {
+            path.push(newPos)
+        }
+
+    }
+
+    private calculateNewPosition(pos: number, steps: number, path: Array<number>): number {
         let newPos = pos + steps
         let direction = (steps >= 0) ? 1 : -1
 
@@ -72,6 +90,8 @@ export class Board {
             let stepsBack = newPos - this.squares.length
             newPos = this.squares.length - stepsBack
             direction = -1
+
+            path.push(this.squares.length - 1)
         }
 
         // Player lands on another player
@@ -79,19 +99,11 @@ export class Board {
             newPos = newPos + direction
         }
 
-        // Move the plauer
-        let oldSquare = this.squares [pos]
-        oldSquare.leave()
-
         if (newPos < 0) {
             newPos = 0
         }
-        path.push(newPos)
 
-        if (newPos > 0) {
-            let square = this.squares[newPos]
-            square.occupy(player, this, path)
-        }
+        return newPos;
     }
 
     /**

@@ -48,9 +48,11 @@ export abstract class Square {
 
     /**
      * Haal de speler die op het vakje staat weg van dit vakje.
+     * @return true if the player can leave the square, false otherwise
      */
-    leave() {
+    leave(): boolean {
         this.player = undefined
+        return true
     }
 
     /**
@@ -82,10 +84,15 @@ export class Finish extends Square {
      * De speler die op dit vakje land moet aangemerkt worden als een winnaar.
      *
      * @param player De huidige speler
-     * @param _ The board
+     * @param board The board
+     * @param path The path the player has taken
      */
-    playerLands(player: Player, _: Board) {
-        player.winner = true
+    playerLands(player: Player, board: Board, path: Array<number>) {
+        if (player.visa < 3) {
+            board.movePlayer(player, -1, path)
+        } else {
+            player.winner = true
+        }
     }
 }
 
@@ -147,15 +154,24 @@ export class GiftedMoneySquare extends Square {
  * on (you can roll on your spot for money, as soon as you have the money you have to move on)
  */
 export class VisaSquare extends Square {
+    requiredVisas: number
 
-    constructor(place: number, description: string) {
+    constructor(place: number, description: string, requiredVisas: number) {
         super(place, description)
+        this.requiredVisas = requiredVisas
     }
 
-    playerLands(player: Player, board: Board, path: Array<number>): void {
-        // TODO
+    playerLands(_1: Player, _2: Board, _3: Array<number>): void {
     }
 
+    leave(): boolean {
+        if (this.player.visa >= this.requiredVisas) {
+            this.player.visa -= this.requiredVisas
+            return super.leave()
+        } else {
+            return false
+        }
+    }
 }
 
 /**

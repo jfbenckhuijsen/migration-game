@@ -13,6 +13,7 @@ export class Player {
     skipTurns: number = 0
     doubleMoney: number = 1
     rollDouble: number = 1
+    visa: number = 0
 
     constructor(id: number) {
         this.id = id
@@ -27,6 +28,8 @@ export class Player {
     takeTurn(board: Board) : Turn {
         let dice = new Dice()
         let steps = dice.roll()
+
+        // TODO: Multiple dice
 
         this.money += steps * Player.MONEY_PER_STEP * this.doubleMoney
 
@@ -60,8 +63,7 @@ export class Player {
     }
 
     visaCount(): number {
-        // TODO Ymre
-        return 0
+        return this.visa
     }
 
     doubleSpaces(): boolean {
