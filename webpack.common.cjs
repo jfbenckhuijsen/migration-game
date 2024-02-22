@@ -1,7 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
 module.exports = {
     entry: './src/index.ts',
@@ -9,17 +7,11 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: 'Migration game',
             template: "src/index.ejs"
-        }),
-        new MiniCssExtractPlugin()
+        })
     ],
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
-    },
-    optimization: {
-        minimizer: [
-            new CssMinimizerPlugin(),
-        ],
     },
     module: {
         rules: [
@@ -35,7 +27,7 @@ module.exports = {
             },
             {
                 test: /\.css$/i,
-                use: [MiniCssExtractPlugin.loader, 'style-loader', 'css-loader'],
+                use: ['style-loader', 'css-loader'],
             },
             {
                 test: /\.(png|svg|jpg|jpeg|gif|mp3)$/i,
