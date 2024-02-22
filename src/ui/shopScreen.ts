@@ -128,6 +128,7 @@ export class ShopScreen {
             b.button = sketch.createButton(b.title)
                 .mouseClicked(() => {
                     b.callback(this)
+                    this.showForPlayer(this.player)
                 })
                 .position(x, y + index * 25)
 
