@@ -9,8 +9,10 @@ export abstract class Items {
     }
 
     buy() {
-        this.owner.money -= this.cost
-        this.doBuy()
+       if (this.owner.money >= this.cost) {
+           this.owner.money -= this.cost
+           this.doBuy()
+       }
     }
 
     abstract doBuy() :void
