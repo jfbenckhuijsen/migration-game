@@ -16,7 +16,7 @@ import diceRolling from '../ui/dice-roll.mp3';
 
 export class Canvas {
 
-    static VERSION = "0.0.1"
+    static VERSION = "1.0.0"
     static MIN_NUMBER_OF_PLAYERS = 2
     static MAX_NUMBER_OF_PLAYERS = Object.keys(PlayerColor).length / 2
     static MAX_NUMBER_OF_DICE = 3
