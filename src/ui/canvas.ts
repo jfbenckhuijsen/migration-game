@@ -1,7 +1,7 @@
 import '../style.css';
 import * as p5 from "p5";
 import {Game} from "../game/game";
-import gamemap from "./game-map.png";
+import gamemap from "./game-map.jpg";
 import {Turn} from "../game/turn";
 import {DiceSprite} from "./diceSprite";
 import {PlayerColor, PlayerSprite} from "./playerSprite";

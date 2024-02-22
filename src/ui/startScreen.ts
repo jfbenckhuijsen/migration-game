@@ -1,6 +1,6 @@
 import '../style.css';
 import * as p5 from "p5";
-import gamemap from "./game-map.png";
+import gamemap from "./game-map.jpg";
 import {Canvas} from "./canvas";
 
 export class StartScreen {
